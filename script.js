@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!cartCount) return;
         cartCount.textContent = String(cart.length);
         cartCount.classList.remove('bump');
-        // Force reflow so the animation can replay on rapid consecutive adds
         void cartCount.offsetWidth;
         cartCount.classList.add('bump');
     }
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
             menuToggle.setAttribute('aria-expanded', String(isOpen));
         });
 
-        // Close mobile menu after choosing a link
         nav.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', () => {
                 nav.classList.remove('open');
@@ -46,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.textContent = message;
         toast.classList.add('visible');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2200);
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2600);
     }
 
     // Category filter bar, search and sort (shop page only)
@@ -65,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let visibleCount = 0;
 
             cards.forEach((card) => {
-                const cardLeague = card.getAttribute('data-league');
-                const cardCategory = card.getAttribute('data-category');
-                const matchesFilter = activeFilter === 'all' || cardLeague === activeFilter || cardCategory === activeFilter;
+                const matchesFilter = activeFilter === 'all'
+                    || card.getAttribute('data-league') === activeFilter
+                    || card.getAttribute('data-category') === activeFilter;
                 const name = card.querySelector('h3').textContent.toLowerCase();
                 const matchesSearch = !query || name.includes(query);
                 const show = matchesFilter && matchesSearch;
@@ -80,8 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         filterButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
-                filterButtons.forEach((b) => b.classList.remove('active'));
+                filterButtons.forEach((b) => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-pressed', 'false');
+                });
                 btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
                 activeFilter = btn.getAttribute('data-filter');
                 applyFilters();
             });
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cards.forEach((card, i) => { card.dataset.originalOrder = i; });
 
-        // Scroll-reveal animation for cards (skipped gracefully if IntersectionObserver isn't available)
+        // Scroll-reveal animation for cards
         if ('IntersectionObserver' in window) {
             cards.forEach((card, i) => {
                 card.classList.add('reveal');
@@ -130,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Quick-view modal: "View Kit" opens a popup with image, price, and sizing (shop page only)
+    // Quick-view modal: opens on click, shows image/price/size, buys via Stripe when available
     const modalOverlay = document.getElementById('modal-overlay');
     const modalClose = document.getElementById('modal-close');
     const modalImg = document.getElementById('modal-img');
@@ -142,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAdd = document.getElementById('modal-add');
 
     let activeProduct = null;
+    let activeStripeLink = null;
 
     if (modalOverlay && modalAdd) {
         function setModalImage(src, alt) {
@@ -157,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function openModal(card, button) {
             const product = button.getAttribute('data-product');
             const price = button.getAttribute('data-price');
+            const stripeLink = button.getAttribute('data-stripe-link');
             const img = card.querySelector('.card-image img');
             const tag = card.querySelector('.tag');
             const sizeSelect = card.querySelector('.size-select');
@@ -164,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const galleryImages = galleryAttr ? galleryAttr.split(',').map((s) => s.trim()).filter(Boolean) : [];
 
             activeProduct = product;
+            activeStripeLink = stripeLink || null;
 
             const firstSrc = galleryImages[0] || (img ? img.src : '');
             setModalImage(firstSrc, img ? img.alt : product);
@@ -190,9 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
             modalTag.className = tag ? `tag ${tag.classList[1] || ''}` : 'tag';
             modalTitle.textContent = product;
             modalPrice.textContent = `£${price}`;
-
-            // Mirror the card's size options (including which are out of stock)
             modalSize.innerHTML = sizeSelect ? sizeSelect.innerHTML : '';
+            modalAdd.textContent = activeStripeLink ? 'Buy Now' : 'Add to Cart';
 
             modalOverlay.classList.add('visible');
         }
@@ -200,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function closeModal() {
             modalOverlay.classList.remove('visible');
             activeProduct = null;
+            activeStripeLink = null;
         }
 
         modalClose.addEventListener('click', closeModal);
@@ -221,31 +226,33 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!activeProduct) return;
             const size = modalSize.value;
             const price = modalPrice.textContent.replace('£', '');
+
             cart.push({
                 id: `${activeProduct}-${size}-${Date.now()}`,
                 product: activeProduct,
                 price: parseFloat(price) || 0,
                 size,
-                img: modalImg.src
+                img: modalImg.src,
+                stripeLink: activeStripeLink
             });
             updateCartCount();
-            showToast(size ? `${activeProduct} (Size ${size}) added to your cart` : `${activeProduct} added to your cart`);
+
+            if (activeStripeLink) {
+                showToast(`Redirecting to secure payment for ${activeProduct}…`);
+                window.open(activeStripeLink, '_blank', 'noopener');
+            } else {
+                showToast(size ? `${activeProduct} (Size ${size}) added to your cart` : `${activeProduct} added to your cart`);
+            }
+
             closeModal();
         });
     }
 
-    // Cart drawer + checkout flow (shop page only)
+    // Cart drawer: lists picked items, each with its own real Stripe Buy Now link
     const cartOverlay = document.getElementById('cart-overlay');
     const cartClose = document.getElementById('cart-close');
     const cartItemsEl = document.getElementById('cart-items');
     const cartSubtotalEl = document.getElementById('cart-subtotal');
-    const checkoutSubtotalEl = document.getElementById('checkout-subtotal');
-    const checkoutTotalEl = document.getElementById('checkout-total');
-    const cartCheckoutBtn = document.getElementById('cart-checkout-btn');
-    const checkoutBack = document.getElementById('checkout-back');
-    const checkoutForm = document.getElementById('checkout-form');
-    const confirmNumber = document.getElementById('confirm-number');
-    const confirmContinue = document.getElementById('confirm-continue');
 
     if (cartOverlay) {
         function formatPrice(n) {
@@ -266,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="cart-item-info">
                         <h4>${item.product}</h4>
                         <div class="cart-item-meta">Size ${item.size} &middot; ${formatPrice(item.price)}</div>
+                        ${item.stripeLink ? `<a class="cart-item-buy" href="${item.stripeLink}" target="_blank" rel="noopener">Buy Now &rarr;</a>` : ''}
                     </div>
                     <button class="cart-item-remove" type="button" aria-label="Remove ${item.product}">&times;</button>
                 `;
@@ -278,13 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             cartSubtotalEl.textContent = formatPrice(subtotal);
-            checkoutSubtotalEl.textContent = formatPrice(subtotal);
-            checkoutTotalEl.textContent = formatPrice(subtotal);
         }
 
         function openCart() {
             renderCart();
-            cartOverlay.classList.remove('show-checkout', 'show-confirm');
             cartOverlay.classList.add('visible');
         }
 
@@ -301,33 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (cartButton) cartButton.addEventListener('click', openCart);
-
-        cartCheckoutBtn.addEventListener('click', () => {
-            if (cart.length === 0) return;
-            cartOverlay.classList.add('show-checkout');
-        });
-
-        checkoutBack.addEventListener('click', () => {
-            cartOverlay.classList.remove('show-checkout');
-        });
-
-        checkoutForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Demo checkout only: no payment gateway is connected, nothing is charged
-            // or transmitted anywhere. A real store would send this to a payment
-            // processor (e.g. Stripe) from a secure backend at this point.
-            const orderNumber = `KV-${Math.floor(100000 + Math.random() * 900000)}`;
-            confirmNumber.textContent = orderNumber;
-            cartOverlay.classList.add('show-confirm');
-        });
-
-        confirmContinue.addEventListener('click', () => {
-            cart = [];
-            updateCartCount();
-            checkoutForm.reset();
-            closeCart();
-            cartOverlay.classList.remove('show-checkout', 'show-confirm');
-        });
     } else if (cartButton) {
         // On pages without the cart drawer (legal pages, 404), send people back to the shop
         cartButton.addEventListener('click', () => {

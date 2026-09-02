@@ -908,6 +908,17 @@ footer {
     margin: 0 0 2rem;
 }
 
+.success-content .confirm-icon {
+    margin: 0 auto 1.5rem;
+}
+
+.order-ref {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: rgba(16, 35, 27, 0.5);
+    margin-top: -1rem;
+}
+
 /* ============================================
    Cart & checkout
    ============================================ */
@@ -994,6 +1005,18 @@ footer {
     font-size: 0.72rem;
     color: rgba(16, 35, 27, 0.6);
 }
+
+.cart-item-buy {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--turf-green-dark);
+    margin-top: 0.3rem;
+    border-bottom: 1px solid rgba(31, 92, 63, 0.4);
+}
+
+.cart-item-buy:hover { color: var(--kit-red); border-color: var(--kit-red); }
 
 .cart-item-remove {
     background: none;

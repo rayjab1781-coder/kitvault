@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found | KitVault</title>
-    <meta name="description" content="This page could not be found.">
+    <title>Order Successful | KitVault</title>
+    <meta name="description" content="Your KitVault order was placed successfully.">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,10 +51,11 @@
         </div>
     </header>
     <main id="main-content">
-        <section class="error-content">
-            <div class="error-code">404</div>
-            <h1>This shirt isn't in the vault</h1>
-            <p>The page you're looking for doesn't exist or may have moved.</p>
+        <section class="error-content success-content">
+            <div class="confirm-icon">&#10003;</div>
+            <h1>Payment Successful</h1>
+            <p>Thank you &mdash; your order has been placed and paid for securely via Stripe. A receipt has been sent to your email, and we'll be in touch with tracking details once it ships.</p>
+            <p class="order-ref" id="order-ref"></p>
             <a class="btn btn-primary" href="index.html">Back to KitVault</a>
         </section>
 
@@ -84,5 +85,14 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="script.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const sessionId = params.get('session_id');
+        if (sessionId) {
+            const ref = document.getElementById('order-ref');
+            if (ref) ref.textContent = `Reference: ${sessionId}`;
+        }
+    </script>
+
 </body>
 </html>
