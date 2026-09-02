@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | KitVault Football Shirts</title>
+<meta name="description" content="Review your KitVault basket and pay securely with Stripe. Free UK delivery on orders over £50.">
+<meta name="robots" content="noindex,follow">
+<meta property="og:title" content="Checkout | KitVault">
+<meta property="og:description" content="Review your basket and pay securely with Stripe.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e0e0e">
+<link rel="canonical" href="https://kitvault.co.uk/checkout.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --kv-black:#0e0e0e; --kv-panel:#161616; --kv-panel-2:#1d1d1d;
+  --kv-line:rgba(255,255,255,.12); --kv-text:#f4f4f4; --kv-dim:rgba(244,244,244,.62);
+  --kv-yellow:#ffd400; --kv-green:#0f8a44; --kv-gold:#e8c46a;
+}
+*{box-sizing:border-box}
+body.kv-checkout{margin:0;background:var(--kv-black);color:var(--kv-text);font-family:"Work Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.kv-checkout a{color:inherit}
+.kv-strip{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;background:var(--kv-yellow);color:#111;font-family:"Space Mono",monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 14px}
+.kv-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:18px 22px;border-bottom:1px solid var(--kv-line);position:sticky;top:0;background:rgba(14,14,14,.92);backdrop-filter:blur(8px);z-index:5}
+.kv-brand{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.kv-badge{display:grid;place-items:center;width:40px;height:40px;background:var(--kv-yellow);color:#111;font-family:"Anton",sans-serif;letter-spacing:.05em;border-radius:6px}
+.kv-brand-title{font-family:"Anton",sans-serif;font-size:1.25rem;letter-spacing:.06em;line-height:1}
+.kv-brand-tag{display:block;font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--kv-dim);margin-top:3px}
+.kv-back{font-size:.85rem;font-weight:600;text-decoration:none;border:1px solid var(--kv-line);padding:9px 14px;border-radius:999px;transition:background .2s,border-color .2s}
+.kv-back:hover{background:var(--kv-panel-2);border-color:var(--kv-yellow)}
+.kv-wrap{max-width:1080px;margin:0 auto;padding:34px 22px 80px}
+.kv-steps{display:flex;gap:.5rem;align-items:center;font-family:"Space Mono",monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--kv-dim);margin-bottom:14px}
+.kv-steps b{color:var(--kv-yellow);font-weight:400}
+.kv-title{font-family:"Anton",sans-serif;font-size:clamp(2.2rem,7vw,3.6rem);letter-spacing:.02em;margin:0 0 .35rem;text-transform:uppercase}
+.kv-sub{margin:0 0 30px;color:var(--kv-dim);max-width:52ch}
+.kv-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:26px;align-items:start}
+@media(max-width:860px){.kv-grid{grid-template-columns:1fr}}
+.kv-card{background:var(--kv-panel);border:1px solid var(--kv-line);border-radius:14px;padding:20px}
+.kv-card h2{font-family:"Anton",sans-serif;font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px}
+.kv-item{display:grid;grid-template-columns:78px 1fr auto;gap:14px;padding:14px 0;border-top:1px solid var(--kv-line)}
+.kv-item:first-of-type{border-top:0}
+.kv-thumb{width:78px;height:92px;border-radius:10px;background:repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 12px,#202020 12px,#202020 24px);object-fit:cover}
+.kv-item-name{margin:0 0 4px;font-weight:700;font-size:1rem}
+.kv-meta{margin:0;font-family:"Space Mono",monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--kv-dim)}
+.kv-item-side{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.kv-price{font-family:"Space Mono",monospace;font-weight:700}
+.kv-qty{display:flex;align-items:center;gap:6px}
+.kv-qty button{width:26px;height:26px;border-radius:6px;border:1px solid var(--kv-line);background:var(--kv-panel-2);color:inherit;cursor:pointer;font-size:.9rem;line-height:1}
+.kv-qty button:hover{border-color:var(--kv-yellow)}
+.kv-qty span{min-width:18px;text-align:center;font-family:"Space Mono",monospace;font-size:.85rem}
+.kv-remove{background:none;border:0;color:var(--kv-dim);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;padding:0}
+.kv-remove:hover{color:#ff6b6b}
+.kv-pay{display:inline-block;text-align:center;background:var(--kv-yellow);color:#111;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:9px 14px;border-radius:999px;border:0;cursor:pointer;transition:transform .15s,box-shadow .2s}
+.kv-pay:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(255,212,0,.25)}
+.kv-pay[aria-disabled="true"],.kv-pay:disabled{background:var(--kv-panel-2);color:var(--kv-dim);cursor:not-allowed;box-shadow:none;transform:none}
+.kv-row{display:flex;justify-content:space-between;gap:1rem;padding:9px 0;font-size:.92rem}
+.kv-row span:last-child{font-family:"Space Mono",monospace}
+.kv-total{border-top:1px solid var(--kv-line);margin-top:6px;padding-top:14px;font-family:"Anton",sans-serif;font-size:1.35rem;letter-spacing:.04em}
+.kv-progress{height:6px;border-radius:999px;background:var(--kv-panel-2);overflow:hidden;margin:6px 0 8px}
+.kv-progress i{display:block;height:100%;background:var(--kv-green);width:0;transition:width .4s ease}
+.kv-ship-note{font-size:.78rem;color:var(--kv-dim);margin:0 0 14px}
+.kv-trust{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px;font-size:.8rem;color:var(--kv-dim)}
+.kv-trust li{display:flex;gap:8px;align-items:flex-start}
+.kv-trust li::before{content:"";flex:0 0 auto;width:14px;height:14px;margin-top:2px;border-radius:50%;background:var(--kv-green)}
+.kv-empty{text-align:center;padding:44px 10px}
+.kv-empty p{color:var(--kv-dim)}
+.kv-banner{display:none;border-radius:12px;padding:14px 16px;margin-bottom:22px;font-size:.92rem;border:1px solid}
+.kv-banner.ok{display:block;border-color:rgba(15,138,68,.5);background:rgba(15,138,68,.14)}
+.kv-banner.warn{display:block;border-color:rgba(255,212,0,.45);background:rgba(255,212,0,.1)}
+.kv-foot{border-top:1px solid var(--kv-line);padding:26px 22px;text-align:center;color:var(--kv-dim);font-size:.82rem}
+.kv-foot a{text-decoration:none;margin:0 .5rem;white-space:nowrap}
+.kv-foot a:hover{color:var(--kv-yellow)}
+.kv-legal{margin:18px 0 0;font-size:.72rem;color:var(--kv-dim);line-height:1.6}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}}
+</style>
+</head>
+<body class="kv-checkout">
+
+<div class="kv-strip" aria-hidden="true"><span>SECURE STRIPE CHECKOUT</span><span>FREE UK DELIVERY OVER £50</span><span>EST. 2026</span></div>
+
+<header class="kv-head">
+  <a class="kv-brand" href="index.html">
+    <span class="kv-badge">KV</span>
+    <span><span class="kv-brand-title">KITVAULT</span><span class="kv-brand-tag">Classic · Rare · Replica</span></span>
+  </a>
+  <a class="kv-back" href="index.html#kits">← Keep shopping</a>
+</header>
+
+<main class="kv-wrap">
+  <p class="kv-steps"><b>1. Basket</b> <span>/</span> <span>2. Stripe payment</span> <span>/</span> <span>3. Shirt shipped</span></p>
+  <h1 class="kv-title">Checkout</h1>
+  <p class="kv-sub">Check your sizes below, then pay for each shirt on its own secure Stripe page. Nothing leaves the vault until payment clears.</p>
+
+  <div class="kv-banner" id="kv-banner" role="status" aria-live="polite"></div>
+
+  <div class="kv-grid">
+    <section class="kv-card" aria-labelledby="kv-basket-h">
+      <h2 id="kv-basket-h">Your basket</h2>
+      <div id="kv-items"></div>
+      <div class="kv-empty" id="kv-empty" hidden>
+        <p>Your basket is empty — the vault is still full though.</p>
+        <a class="kv-pay" href="index.html#kits">Browse shirts</a>
+      </div>
+      <p class="kv-legal">KitVault sells unofficial replica shirts. Sizes run true to a standard adult fit — check the <a href="size-guide.html">size guide</a> before paying.</p>
+    </section>
+
+    <aside class="kv-card" aria-labelledby="kv-summary-h">
+      <h2 id="kv-summary-h">Order summary</h2>
+      <div class="kv-row"><span>Subtotal</span><span id="kv-subtotal">£0.00</span></div>
+      <div class="kv-row"><span>UK delivery</span><span id="kv-shipping">£0.00</span></div>
+      <div class="kv-progress"><i id="kv-bar"></i></div>
+      <p class="kv-ship-note" id="kv-ship-note">Spend £50 for free UK delivery.</p>
+      <div class="kv-row kv-total"><span>Total</span><span id="kv-total">£0.00</span></div>
+      <ul class="kv-trust">
+        <li>Card details handled entirely by Stripe — never by us.</li>
+        <li>Dispatched from the UK within 2 working days.</li>
+        <li>14-day returns on unworn shirts with tags.</li>
+        <li>Promo codes are applied on the Stripe payment page.</li>
+      </ul>
+      <p class="kv-legal">Questions? <a href="mailto:KitVaultCustomerService@gmail.com">KitVaultCustomerService@gmail.com</a></p>
+    </aside>
+  </div>
+</main>
+
+<footer class="kv-foot">
+  <p>© 2026 KitVault. Unofficial replica football shirts.</p>
+  <p>
+    <a href="faq.html">Help &amp; FAQ</a><a href="size-guide.html">Size Guide</a><a href="shipping-returns.html">Shipping &amp; Returns</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Stripe payment links, keyed by product name exactly as used on the shop cards. */
+  var STRIPE_LINKS = {
+    "Real Madrid Home": "https://buy.stripe.com/4gM6oG7TD3d7eSq66l6g801",
+    "Barcelona Home": "https://buy.stripe.com/eVq00iddX14Zh0ybqF6g802",
+    "Liverpool Home": "https://buy.stripe.com/3cI7sKa1L293eSq7ap6g803",
+    "Brazil R9 2002": "https://buy.stripe.com/bJebJ00rbaFzdOmdyN6g804",
+    "France 1998 Zidane": "https://buy.stripe.com/fZu6oG7TDeVP25E1Q56g805",
+    "AC Milan Kaká 2006 Away": "https://buy.stripe.com/aFaaEW8XH7tnfWu1Q56g806"
+  };
+
+  var FREE_SHIPPING_FROM = 50;
+  var SHIPPING = 3.99;
+  var PLACEHOLDER = "data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 fill-opacity=%270.5%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E";
+
+  var itemsEl = document.getElementById("kv-items");
+  var emptyEl = document.getElementById("kv-empty");
+  var bannerEl = document.getElementById("kv-banner");
+
+  /* ---- cart storage (matches whichever key the shop's script.js uses) ---- */
+  var KEYS = ["kitvault-cart", "kitvaultCart", "kv-cart", "cart"];
+  var storeKey = KEYS[0];
+
+  function read() {
+    for (var i = 0; i < KEYS.length; i++) {
+      try {
+        var raw = localStorage.getItem(KEYS[i]);
+        if (!raw) continue;
+        var parsed = JSON.parse(raw);
+        var list = Array.isArray(parsed) ? parsed : (parsed && Array.isArray(parsed.items) ? parsed.items : null);
+        if (list && list.length) { storeKey = KEYS[i]; return list.map(normalise); }
+      } catch (e) { /* ignore malformed entries */ }
+    }
+    return [];
+  }
+
+  function normalise(it) {
+    it = it || {};
+    return {
+      name: it.name || it.product || it.title || "Shirt",
+      price: Number(it.price != null ? it.price : it.amount) || 0,
+      size: it.size || "M",
+      qty: Math.max(1, Number(it.qty || it.quantity) || 1),
+      image: it.image || it.img || ""
+    };
+  }
+
+  function write(list) {
+    try { localStorage.setItem(storeKey, JSON.stringify(list)); } catch (e) {}
+  }
+
+  var cart = read();
+
+  function money(n) { return "£" + n.toFixed(2); }
+
+  function banner(kind, msg) {
+    bannerEl.className = "kv-banner " + kind;
+    bannerEl.textContent = msg;
+  }
+
+  function render() {
+    itemsEl.textContent = "";
+    if (!cart.length) {
+      emptyEl.hidden = false;
+    } else {
+      emptyEl.hidden = true;
+      cart.forEach(function (item, index) {
+        var link = STRIPE_LINKS[item.name];
+
+        var row = document.createElement("div");
+        row.className = "kv-item";
+
+        var img = document.createElement("img");
+        img.className = "kv-thumb";
+        img.alt = item.name + " shirt";
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.src = item.image || PLACEHOLDER;
+        img.onerror = function () { this.onerror = null; this.src = PLACEHOLDER; };
+
+        var mid = document.createElement("div");
+        var h3 = document.createElement("p");
+        h3.className = "kv-item-name";
+        h3.textContent = item.name;
+        var meta = document.createElement("p");
+        meta.className = "kv-meta";
+        meta.textContent = "Size " + item.size + " · " + money(item.price) + " each";
+        mid.appendChild(h3);
+        mid.appendChild(meta);
+
+        var qty = document.createElement("div");
+        qty.className = "kv-qty";
+        qty.appendChild(step("−", function () { changeQty(index, -1); }, "Decrease quantity of " + item.name));
+        var count = document.createElement("span");
+        count.textContent = String(item.qty);
+        qty.appendChild(count);
+        qty.appendChild(step("+", function () { changeQty(index, 1); }, "Increase quantity of " + item.name));
+        mid.appendChild(qty);
+
+        var side = document.createElement("div");
+        side.className = "kv-item-side";
+        var price = document.createElement("span");
+        price.className = "kv-price";
+        price.textContent = money(item.price * item.qty);
+        side.appendChild(price);
+
+        if (link) {
+          var pay = document.createElement("a");
+          pay.className = "kv-pay";
+          pay.href = link;
+          pay.target = "_blank";
+          pay.rel = "noopener";
+          pay.textContent = "Pay with Stripe";
+          side.appendChild(pay);
+        } else {
+          var soon = document.createElement("span");
+          soon.className = "kv-pay";
+          soon.setAttribute("aria-disabled", "true");
+          soon.textContent = "Coming soon";
+          side.appendChild(soon);
+        }
+
+        var remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "kv-remove";
+        remove.textContent = "Remove";
+        remove.addEventListener("click", function () { removeItem(index); });
+        side.appendChild(remove);
+
+        row.appendChild(img);
+        row.appendChild(mid);
+        row.appendChild(side);
+        itemsEl.appendChild(row);
+      });
+    }
+    totals();
+  }
+
+  function step(label, fn, aria) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    b.setAttribute("aria-label", aria);
+    b.addEventListener("click", fn);
+    return b;
+  }
+
+  function changeQty(i, delta) {
+    cart[i].qty = Math.max(1, cart[i].qty + delta);
+    write(cart); render();
+  }
+
+  function removeItem(i) {
+    cart.splice(i, 1);
+    write(cart); render();
+  }
+
+  function totals() {
+    var subtotal = cart.reduce(function (sum, it) { return sum + it.price * it.qty; }, 0);
+    var shipping = (!cart.length || subtotal >= FREE_SHIPPING_FROM) ? 0 : SHIPPING;
+    document.getElementById("kv-subtotal").textContent = money(subtotal);
+    document.getElementById("kv-shipping").textContent = shipping ? money(shipping) : "Free";
+    document.getElementById("kv-total").textContent = money(subtotal + shipping);
+
+    var pct = Math.min(100, (subtotal / FREE_SHIPPING_FROM) * 100);
+    document.getElementById("kv-bar").style.width = pct + "%";
+    document.getElementById("kv-ship-note").textContent = subtotal >= FREE_SHIPPING_FROM
+      ? "Free UK delivery unlocked."
+      : "Add " + money(FREE_SHIPPING_FROM - subtotal) + " more for free UK delivery.";
+  }
+
+  /* Stripe redirects back with ?status=success / ?status=cancelled */
+  var status = new URLSearchParams(location.search).get("status");
+  if (status === "success") {
+    banner("ok", "Payment received — thank you. Your confirmation email is on its way from Stripe.");
+    cart = []; write(cart);
+  } else if (status === "cancelled") {
+    banner("warn", "Payment cancelled. Your basket is still here whenever you're ready.");
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
