@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KitVault | Football Shirts</title>
+    <meta name="description" content="KitVault — classic, retro and current football shirts. Unofficial replica kits, catalogued and ready for matchday.">
+    <meta property="og:title" content="KitVault | Football Shirts">
+    <meta property="og:description" content="Classic, retro and current football shirts, catalogued and ready for matchday.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://kitvault.co.uk/">
+    <meta name="theme-color" content="#0e0e0e">
+    <meta property="og:url" content="https://kitvault.co.uk/">
+    <meta property="og:image" content="https://kitvault.co.uk/images/og-cover.jpg">
+    <meta property="og:site_name" content="KitVault">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KitVault | Football Shirts">
+    <meta name="twitter:description" content="Classic, retro and current football shirts, catalogued and ready for matchday.">
+    <meta name="twitter:image" content="https://kitvault.co.uk/images/og-cover.jpg">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"Store","name":"KitVault","url":"https://kitvault.co.uk/","description":"Classic, retro and current football shirts. Unofficial replica kits.","email":"KitVaultCustomerService@gmail.com","sameAs":["https://www.youtube.com/@Kit_Vault"],"currenciesAccepted":"GBP","areaServed":"GB"}
+    </script>
+    <style>
+        /* Graceful placeholder when a product photo is missing */
+        .card-image img.img-missing,
+        .modal-image img.img-missing {
+            object-fit: contain;
+            padding: 18%;
+            background: repeating-linear-gradient(45deg, #1a1a1a, #1a1a1a 12px, #202020 12px, #202020 24px);
+            opacity: .55;
+        }
+        .card-image { position: relative; }
+        .card-image .photo-pending {
+            position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+            font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+            padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.72); color: #fff;
+            pointer-events: none;
+        }
+        .card-image img:not(.img-missing) ~ .photo-pending { display: none; }
+        .btn-card[disabled], .size-select[disabled] { cursor: not-allowed; }
+
+        .stock-ribbon-in { background:#0f8a44; color:#fff; }
+        .promo-box { border-top:1px solid rgba(0,0,0,.08); padding-top:10px; margin-bottom:8px; }
+        .promo-tab { background:none; border:none; padding:6px 0; font:inherit; font-weight:600; cursor:pointer; color:inherit; text-decoration:underline; }
+        .promo-panel { padding:6px 0 2px; }
+        .promo-msg { margin:0; font-size:.85rem; opacity:.8; }
+        .cart-checkout { display:block; text-align:center; margin-top:14px; text-decoration:none; }
+        .cart-note { font-size:.85rem; opacity:.75; margin:0 0 1rem; }
+
+        .filter-btn[aria-pressed="true"] { font-weight: 700; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <noscript>
+        <p style="padding:12px 16px;text-align:center;background:#ffd400;color:#111;margin:0;font-family:sans-serif">Search, filtering and the cart need JavaScript enabled.</p>
+    </noscript>
+
+    <div class="scoreboard-strip" aria-hidden="true">
+        <span>EST. 2026</span><span>THE ARCHIVE</span><span>WORLD CUP · RETRO · MATCHDAY</span><span>FREE UK DELIVERY OVER £50</span>
+    </div>
+
+    <header>
+        <div class="header-inner">
+            <a class="brand" href="#top">
+                <span class="logo-badge">KV</span>
+                <span class="logo">
+                    <span class="logo-title">KITVAULT</span>
+                    <span class="logo-tag">Classic &middot; Rare &middot; Replica</span>
+                </span>
+            </a>
+
+            <nav id="site-nav" aria-label="Primary">
+                <a href="#top">Home</a>
+                <a href="#kits">Kits</a>
+                <a href="checkout.html">Checkout</a>
+                <a href="faq.html">Help &amp; FAQ</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="header-actions">
+                <a class="youtube-link" href="https://www.youtube.com/@Kit_Vault/shorts" target="_blank" rel="noopener" aria-label="KitVault on YouTube">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.5v-7l6.3 3.5-6.3 3.5z"/></svg>
+                </a>
+                <button class="cart-button" id="cart-button" type="button" aria-label="View cart">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M7 4h-2l-1 2v1h2l3.6 7.6-1.35 2.44A2 2 0 0 0 9.85 20H19v-2H9.85l1.1-2H17a2 2 0 0 0 1.79-1.11L21.5 8H7.42l-.85-2H7zM7 22a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                    <span id="cart-count">0</span>
+                </button>
+                <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+    <section class="hero" id="top">
+        <div class="hero-blocks" aria-hidden="true"></div>
+        <span class="hero-number" aria-hidden="true">26</span>
+        <div class="hero-content">
+            <svg class="hero-trophy" viewBox="0 0 80 100" aria-hidden="true">
+                <circle cx="40" cy="30" r="22" fill="var(--trophy-gold)"/>
+                <path d="M22 30 C22 12 30 4 40 4 C50 4 58 12 58 30" fill="none" stroke="var(--trophy-gold)" stroke-width="4" stroke-linecap="round"/>
+                <path d="M32 50 L48 50 L45 70 L35 70 Z" fill="var(--trophy-gold)"/>
+                <rect x="30" y="70" width="20" height="6" rx="2" fill="var(--trophy-gold)"/>
+                <rect x="24" y="76" width="32" height="6" rx="2" fill="var(--trophy-gold)"/>
+            </svg>
+            <span class="eyebrow">World Cup 2026</span>
+            <h1>Gear Up For<br>The World Cup</h1>
+            <p>Classic, retro and modern football shirts, catalogued and ready for the road to 2026.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" data-scroll="#kits">Shop Now</button>
+            </div>
+        </div>
+
+        <svg class="hero-lineup" viewBox="0 0 900 220" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
+            <rect x="0" y="180" width="900" height="40" fill="var(--turf-green-dark)"/>
+            <g fill="var(--vault-black)">
+                <g transform="translate(90,60)">
+                    <circle cx="30" cy="18" r="16"/>
+                    <path d="M4 100 C4 60 14 44 30 44 C46 44 56 60 56 100 Z"/>
+                    <circle cx="30" cy="70" r="14" fill="var(--wc-blue)"/>
+                    <text x="30" y="76" class="hero-lineup-number" text-anchor="middle">4</text>
+                    <text x="30" y="116" class="hero-lineup-label" text-anchor="middle">DEF</text>
+                </g>
+                <g transform="translate(220,30)">
+                    <circle cx="30" cy="18" r="16"/>
+                    <path d="M4 100 C4 60 14 44 30 44 C46 44 56 60 56 100 Z"/>
+                    <circle cx="30" cy="70" r="14" fill="var(--wc-red)"/>
+                    <text x="30" y="76" class="hero-lineup-number" text-anchor="middle">7</text>
+                    <text x="30" y="116" class="hero-lineup-label" text-anchor="middle">WING</text>
+                </g>
+                <g transform="translate(380,10)">
+                    <circle cx="34" cy="20" r="18"/>
+                    <path d="M4 112 C4 66 16 48 34 48 C52 48 64 66 64 112 Z"/>
+                    <circle cx="34" cy="78" r="16" fill="var(--wc-orange)"/>
+                    <text x="34" y="85" class="hero-lineup-number" text-anchor="middle">10</text>
+                    <text x="34" y="128" class="hero-lineup-label" text-anchor="middle">CAPT</text>
+                </g>
+                <g transform="translate(520,30)">
+                    <circle cx="30" cy="18" r="16"/>
+                    <path d="M4 100 C4 60 14 44 30 44 C46 44 56 60 56 100 Z"/>
+                    <circle cx="30" cy="70" r="14" fill="var(--wc-teal)"/>
+                    <text x="30" y="76" class="hero-lineup-number" text-anchor="middle">9</text>
+                    <text x="30" y="116" class="hero-lineup-label" text-anchor="middle">STRK</text>
+                </g>
+                <g transform="translate(650,55)">
+                    <circle cx="28" cy="17" r="15"/>
+                    <path d="M4 94 C4 58 13 42 28 42 C43 42 52 58 52 94 Z"/>
+                    <circle cx="28" cy="66" r="13" fill="var(--wc-lime)"/>
+                    <text x="28" y="72" class="hero-lineup-number" text-anchor="middle">6</text>
+                    <text x="28" y="110" class="hero-lineup-label" text-anchor="middle">MID</text>
+                </g>
+                <g transform="translate(760,65)">
+                    <circle cx="26" cy="16" r="14"/>
+                    <path d="M4 88 C4 54 12 40 26 40 C40 40 48 54 48 88 Z"/>
+                    <circle cx="26" cy="62" r="12" fill="var(--wc-purple)"/>
+                    <text x="26" y="68" class="hero-lineup-number" text-anchor="middle">1</text>
+                    <text x="26" y="104" class="hero-lineup-label" text-anchor="middle">GK</text>
+                </g>
+            </g>
+        </svg>
+    </section>
+
+    <section class="products" id="kits">
+        <div class="section-heading">
+            <h2>From The Locker Room</h2>
+            <p>A rotating selection from the vault &mdash; new stock added every week.</p>
+        </div>
+
+        <div class="shop-controls">
+            <div class="search-row">
+                <label class="sr-only" for="shirt-search">Search shirts</label>
+                <input type="search" id="shirt-search" class="search-input" placeholder="Search shirts&hellip;" autocomplete="off" autocapitalize="none" spellcheck="false">
+                <label class="sr-only" for="sort-select">Sort by</label>
+                <select id="sort-select" class="sort-select">
+                    <option value="default">Sort: Featured</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="name-asc">Name: A to Z</option>
+                </select>
+            </div>
+
+            <div class="filter-bar" role="group" aria-label="Filter shirts by collection">
+                <button class="filter-btn active" data-filter="all" type="button" aria-pressed="true">All Shirts</button>
+                <button class="filter-btn" data-filter="modern" type="button" aria-pressed="false">Modern Club</button>
+                <button class="filter-btn" data-filter="retro" type="button" aria-pressed="false">Retro Legends</button>
+                <button class="filter-btn" data-filter="special" type="button" aria-pressed="false">Special / New</button>
+            </div>
+
+        </div>
+
+        <p class="no-results" id="no-results">No shirts match your search.</p>
+
+        <div class="card-grid" id="card-grid">
+            <article data-price="26.99" data-gallery="images/real-madrid-home.jpg,images/real-madrid-home-back.jpg,images/real-madrid-home-side.jpg" class="card" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/real-madrid-home.jpg" alt="Real Madrid Home Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Real Madrid Home</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-1">Size</label>
+                        <select class="size-select" id="size-new-1">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Real Madrid Home" data-price="26.99" data-stripe-link="https://buy.stripe.com/4gM6oG7TD3d7eSq66l6g801">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/real-madrid-away.jpg,images/real-madrid-away-back.jpg,images/real-madrid-away-side.jpg" class="card card-featured coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/real-madrid-away.jpg" alt="Real Madrid Away Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Real Madrid Away <span class="star" aria-hidden="true">&#9733;</span></h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-2">Size</label>
+                        <select class="size-select" id="size-new-2" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Real Madrid Away" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/barcelona.jpg,images/barcelona-back.jpg,images/barcelona-side.jpg" class="card" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/barcelona.jpg" alt="Barcelona Home Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Barcelona Home</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-3">Size</label>
+                        <select class="size-select" id="size-new-3">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Barcelona Home" data-price="26.99" data-stripe-link="https://buy.stripe.com/eVq00iddX14Zh0ybqF6g802">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/psg-home.jpg,images/psg-home-back.jpg,images/psg-home-side.jpg" class="card coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/psg-home.jpg" alt="PSG Home Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>PSG Home</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-4">Size</label>
+                        <select class="size-select" id="size-new-4" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="PSG Home" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/psg-away.jpg,images/psg-away-back.jpg,images/psg-away-side.jpg" class="card card-featured coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/psg-away.jpg" alt="PSG Away Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>PSG Away <span class="star" aria-hidden="true">&#9733;</span></h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-5">Size</label>
+                        <select class="size-select" id="size-new-5" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="PSG Away" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/liverpool-home.jpg,images/liverpool-home-back.jpg,images/liverpool-home-side.jpg" class="card" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/liverpool-home.jpg" alt="Liverpool Home Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Liverpool Home</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-6">Size</label>
+                        <select class="size-select" id="size-new-6">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Liverpool Home" data-price="26.99" data-stripe-link="https://buy.stripe.com/3cI7sKa1L293eSq7ap6g803">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/barcelona-away.jpg,images/barcelona-away-back.jpg,images/barcelona-away-side.jpg" class="card card-featured coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/barcelona-away.jpg" alt="Barcelona Away Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Barcelona Away</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-7">Size</label>
+                        <select class="size-select" id="size-new-7" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Barcelona Away" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+
+            <article data-price="26.99" data-gallery="images/man-utd-home.jpg,images/man-utd-home-back.jpg,images/man-utd-home-side.jpg" class="card coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/man-utd-home.jpg" alt="Manchester United Home Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Manchester United Home</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-8">Size</label>
+                        <select class="size-select" id="size-new-8" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Manchester United Home" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="26.99" data-gallery="images/man-utd-away.jpg,images/man-utd-away-back.jpg,images/man-utd-away-side.jpg" class="card coming-soon" data-number="10" data-category="modern" data-league="modern">
+                <span class="tag tag-current">Current Season</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/man-utd-away.jpg" alt="Manchester United Away Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Manchester United Away</h3>
+                    <p class="price">£26.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-9">Size</label>
+                        <select class="size-select" id="size-new-9" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Manchester United Away" data-price="26.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="34.99" data-gallery="images/argentina.jpg,images/argentina-back.jpg,images/argentina-side.jpg" class="card coming-soon" data-number="10" data-category="retro" data-league="retro">
+                <span class="tag tag-retro">Retro</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/argentina.jpg" alt="Argentina World Cup Messi Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Argentina World Cup Messi</h3>
+                    <p class="price">£34.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-10">Size</label>
+                        <select class="size-select" id="size-new-10" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Argentina World Cup Messi" data-price="34.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="34.99" data-gallery="images/brazil-2002-r9.jpg,images/brazil-2002-r9-back.jpg,images/brazil-2002-r9-side.jpg" class="card" data-number="10" data-category="retro" data-league="retro">
+                <span class="tag tag-retro">Retro</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/brazil-2002-r9.jpg" alt="Brazil R9 2002 Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Brazil R9 2002</h3>
+                    <p class="price">£34.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-11">Size</label>
+                        <select class="size-select" id="size-new-11">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Brazil R9 2002" data-price="34.99" data-stripe-link="https://buy.stripe.com/bJebJ00rbaFzdOmdyN6g804">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="34.99" data-gallery="images/portugal-home-cr7.jpg,images/portugal-home-cr7-back.jpg,images/portugal-home-cr7-side.jpg" class="card coming-soon" data-number="10" data-category="retro" data-league="retro">
+                <span class="tag tag-retro">Retro</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/portugal-home-cr7.jpg" alt="Portugal CR7 Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Portugal CR7</h3>
+                    <p class="price">£34.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-12">Size</label>
+                        <select class="size-select" id="size-new-12" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Portugal CR7" data-price="34.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="34.99" data-gallery="images/france-1998-zidane.jpg,images/france-1998-zidane-back.jpg,images/france-1998-zidane-side.jpg" class="card" data-number="10" data-category="retro" data-league="retro">
+                <span class="tag tag-retro">Retro</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/france-1998-zidane.jpg" alt="France 1998 Zidane Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>France 1998 Zidane</h3>
+                    <p class="price">£34.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-13">Size</label>
+                        <select class="size-select" id="size-new-13">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="France 1998 Zidane" data-price="34.99" data-stripe-link="https://buy.stripe.com/fZu6oG7TDeVP25E1Q56g805">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="34.99" data-gallery="images/ac-milan-2006-kaka.jpg,images/ac-milan-2006-kaka-back.jpg,images/ac-milan-2006-kaka-side.jpg" class="card" data-number="10" data-category="retro" data-league="retro">
+                <span class="tag tag-retro">Retro</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-in">In Stock</span>
+                    <img src="images/ac-milan-2006-kaka.jpg" alt="AC Milan Kaka 2006 Away Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>AC Milan Kaká 2006 Away</h3>
+                    <p class="price">£34.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-14">Size</label>
+                        <select class="size-select" id="size-new-14">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="AC Milan Kaká 2006 Away" data-price="34.99" data-stripe-link="https://buy.stripe.com/aFaaEW8XH7tnfWu1Q56g806">Buy Now</button>
+                </div>
+            </article>
+            <article data-price="27.99" data-gallery="images/barcelona-dreamwave.jpg,images/barcelona-dreamwave-back.jpg,images/barcelona-dreamwave-side.jpg" class="card card-featured coming-soon" data-number="10" data-category="special" data-league="special">
+                <span class="tag tag-special">Special Edition</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/barcelona-dreamwave.jpg" alt="Barcelona Dreamwave Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Barcelona Dreamwave <span class="star" aria-hidden="true">&#9733;</span></h3>
+                    <p class="price">£27.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-15">Size</label>
+                        <select class="size-select" id="size-new-15" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Barcelona Dreamwave" data-price="27.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+            <article data-price="27.99" data-gallery="images/brazil.jpg,images/brazil-back.jpg,images/brazil-side.jpg" class="card card-featured coming-soon" data-number="10" data-category="special" data-league="special">
+                <span class="tag tag-special">Special Edition</span>
+                <div class="card-image">
+                    <span class="stock-ribbon stock-ribbon-soon">Coming Soon</span>
+                    <img src="images/brazil.jpg" alt="Brazil Away 2026 Shirt" loading="lazy" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                    <span class="photo-pending">Photo coming soon</span>
+                </div>
+                <div class="card-body">
+                    <h3>Brazil Away 2026 <span class="star" aria-hidden="true">&#9733;</span></h3>
+                    <p class="price">£27.99</p>
+                    <div class="size-row">
+                        <label class="size-label" for="size-new-16">Size</label>
+                        <select class="size-select" id="size-new-16" disabled>
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-card" data-product="Brazil Away 2026" data-price="27.99" disabled>Coming Soon</button>
+                </div>
+            </article>
+        </div>
+    </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="logo-badge">KV</span>
+                <span class="logo-title">KITVAULT</span>
+            </div>
+            <p class="footer-note">Questions about an order or a shirt in the vault? Reach us any time.</p>
+            <a class="footer-email" href="mailto:KitVaultCustomerService@gmail.com">KitVaultCustomerService@gmail.com</a>
+            <div class="footer-social">
+                <a href="https://www.youtube.com/@Kit_Vault/shorts" target="_blank" rel="noopener">Watch us on YouTube</a>
+            </div>
+            <div class="footer-legal-links">
+                <a href="size-guide.html">Size Guide</a>
+                <a href="shipping-returns.html">Shipping &amp; Returns</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+            </div>
+            <p class="copyright">&copy; 2026 KitVault. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" id="modal-close" type="button" aria-label="Close">&times;</button>
+            <div class="modal-image">
+                <img id="modal-img" src="" alt="" decoding="async" onerror="this.onerror=null;this.classList.add('img-missing');this.src='data:image/svg+xml;utf8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Cpath fill=%27%23ffffff%27 d=%27M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z%27/%3E%3C/svg%3E'">
+                <div class="modal-thumbs" id="modal-thumbs"></div>
+            </div>
+            <div class="modal-body">
+                <span class="tag" id="modal-tag"></span>
+                <h3 id="modal-title"></h3>
+                <p class="price" id="modal-price"></p>
+                <div class="size-row">
+                    <label class="size-label" for="modal-size">Size</label>
+                    <select class="size-select" id="modal-size"></select>
+                </div>
+                <a class="size-guide-link" href="size-guide.html" target="_blank">Not sure? See our size guide &rarr;</a>
+                <button class="btn btn-card" id="modal-add">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-heading">
+            <button class="modal-close" id="cart-close" type="button" aria-label="Close">&times;</button>
+
+            <div class="cart-view" id="cart-view">
+                <h3 id="cart-heading">Your Cart</h3>
+                <p class="cart-note">Review everything on the checkout page, then pay securely with Stripe. Free UK delivery on orders over &pound;50.</p>
+                <div class="cart-items" id="cart-items"></div>
+                <p class="cart-empty" id="cart-empty">Your cart is currently empty.</p>
+                <div class="cart-summary">
+                    <div class="promo-box">
+                        <button class="promo-tab" id="promo-tab" type="button" aria-expanded="false" aria-controls="promo-panel">Have a promo code?</button>
+                        <div class="promo-panel" id="promo-panel" hidden>
+                            <p class="promo-msg">Enter your code on Stripe's secure payment page when you check out &mdash; codes aren't applied here.</p>
+                        </div>
+                    </div>
+                    <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">£0.00</span></div>
+                    <a class="btn btn-primary cart-checkout" href="checkout.html">Go to Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+
+    <script>
+    (function () {
+        var tab = document.getElementById('promo-tab');
+        var panel = document.getElementById('promo-panel');
+        if (!tab || !panel) return;
+        tab.addEventListener('click', function () {
+            var open = panel.hidden;
+            panel.hidden = !open;
+            tab.setAttribute('aria-expanded', String(open));
+        });
+    })();
+    </script>
+
+</body>
+</html>
