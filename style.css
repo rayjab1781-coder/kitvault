@@ -210,6 +210,19 @@ nav#site-nav a:focus-visible::after { transform: scaleX(1); }
 
 .youtube-link:hover { color: var(--wc-red); }
 
+.instagram-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: var(--chalk-white);
+    transition: color 0.15s ease;
+}
+
+.instagram-link:hover { color: var(--wc-purple); }
+
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -756,7 +769,13 @@ footer {
     margin-bottom: 0.9rem;
 }
 
-.footer-social { margin-bottom: 1.75rem; }
+.footer-social {
+    margin-bottom: 1.75rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
 
 .footer-social a {
     font-family: var(--font-mono);
