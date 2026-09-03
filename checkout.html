@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout | KitVault Football Shirts</title>
-<meta name="description" content="Review your KitVault basket and pay securely with Stripe. Free UK delivery on orders over £50.">
+<title>Checkout | KitVLT Football Shirts</title>
+<meta name="description" content="Review your KitVLT basket and pay securely with Stripe. Free UK delivery on orders over £50.">
 <meta name="robots" content="noindex,follow">
-<meta property="og:title" content="Checkout | KitVault">
+<meta property="og:title" content="Checkout | KitVLT">
 <meta property="og:description" content="Review your basket and pay securely with Stripe.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0e0e0e">
+<meta name="theme-color" content="#171713">
 <link rel="canonical" href="https://kitvault.co.uk/checkout.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
 :root{
@@ -77,6 +77,32 @@ body.kv-checkout{margin:0;background:var(--kv-black);color:var(--kv-text);font-f
 .kv-foot a{text-decoration:none;margin:0 .5rem;white-space:nowrap}
 .kv-foot a:hover{color:var(--kv-yellow)}
 .kv-legal{margin:18px 0 0;font-size:.72rem;color:var(--kv-dim);line-height:1.6}
+
+/* KitVLT editorial checkout */
+:root{
+  --kv-black:#171713;--kv-panel:#20201b;--kv-panel-2:#292923;
+  --kv-line:rgba(248,245,236,.14);--kv-text:#f8f5ec;--kv-dim:rgba(248,245,236,.62);
+  --kv-yellow:#cba86a;--kv-green:#405447;--kv-gold:#cba86a;
+}
+body.kv-checkout{font-family:"Manrope",sans-serif;background-image:radial-gradient(rgba(248,245,236,.035) .7px,transparent .7px);background-size:7px 7px}
+.kv-strip{justify-content:space-between;background:#a3392f;color:#f8f5ec;font-family:"IBM Plex Mono",monospace;padding-inline:max(22px,calc((100vw - 1180px)/2))}
+.kv-head{padding-inline:max(22px,calc((100vw - 1180px)/2));background:rgba(23,23,19,.96);backdrop-filter:blur(14px)}
+.kv-badge{background:#f8f5ec;color:#171713;font-family:"Archivo Black",sans-serif;border-radius:1px;transform:rotate(-3deg);box-shadow:5px 5px 0 #a3392f}
+.kv-brand-title,.kv-title,.kv-card h2,.kv-total{font-family:"Archivo Black",sans-serif;letter-spacing:-.045em}
+.kv-brand-tag,.kv-steps,.kv-meta,.kv-price,.kv-qty span,.kv-row span:last-child{font-family:"IBM Plex Mono",monospace}
+.kv-brand-tag{letter-spacing:.12em}
+.kv-steps b{color:#cba86a}
+.kv-title{font-size:clamp(3.2rem,8vw,6.6rem);line-height:.92}
+.kv-wrap{max-width:1180px;padding-top:54px}
+.kv-grid{gap:18px}
+.kv-card{border-radius:2px;padding:24px;box-shadow:0 24px 60px -48px rgba(0,0,0,.9)}
+.kv-card h2{font-size:1.1rem}
+.kv-thumb{border-radius:1px}
+.kv-back,.kv-pay{border-radius:999px;font-family:"IBM Plex Mono",monospace}
+.kv-pay{background:#f8f5ec;color:#171713}
+.kv-pay:hover{background:#cba86a;box-shadow:none}
+.kv-progress{border-radius:1px}.kv-progress i{background:#a3392f}
+.kv-trust li::before{border-radius:1px;background:#cba86a}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}}
 </style>
 </head>
@@ -86,8 +112,8 @@ body.kv-checkout{margin:0;background:var(--kv-black);color:var(--kv-text);font-f
 
 <header class="kv-head">
   <a class="kv-brand" href="index.html">
-    <span class="kv-badge">KV</span>
-    <span><span class="kv-brand-title">KITVAULT</span><span class="kv-brand-tag">Classic · Rare · Replica</span></span>
+    <span class="kv-badge">K/</span>
+    <span><span class="kv-brand-title">KITVLT</span><span class="kv-brand-tag">Curated football shirts</span></span>
   </a>
   <a class="kv-back" href="index.html#kits">← Keep shopping</a>
 </header>
@@ -107,7 +133,7 @@ body.kv-checkout{margin:0;background:var(--kv-black);color:var(--kv-text);font-f
         <p>Your basket is empty — the vault is still full though.</p>
         <a class="kv-pay" href="index.html#kits">Browse shirts</a>
       </div>
-      <p class="kv-legal">KitVault sells unofficial replica shirts. Sizes run true to a standard adult fit — check the <a href="size-guide.html">size guide</a> before paying.</p>
+      <p class="kv-legal">KitVLT sells unofficial replica shirts. Sizes run true to a standard adult fit — check the <a href="size-guide.html">size guide</a> before paying.</p>
     </section>
 
     <aside class="kv-card" aria-labelledby="kv-summary-h">
@@ -129,7 +155,7 @@ body.kv-checkout{margin:0;background:var(--kv-black);color:var(--kv-text);font-f
 </main>
 
 <footer class="kv-foot">
-  <p>© 2026 KitVault. Unofficial replica football shirts.</p>
+  <p>© 2026 KitVLT. Unofficial replica football shirts.</p>
   <p>
     <a href="faq.html">Help &amp; FAQ</a><a href="size-guide.html">Size Guide</a><a href="shipping-returns.html">Shipping &amp; Returns</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
   </p>
