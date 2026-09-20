@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service | KitVLT</title>
-    <meta name="description" content="Terms of service for shopping with KitVLT.">
+    <title>Shirt | KitVLT</title>
+    <meta name="description" content="Shop this shirt at KitVLT.">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,31 +57,55 @@
             </div>
         </div>
     </header>    <main id="main-content">
-        <section class="legal-content">
-            <span class="eyebrow">Policies</span>
-            <h1>Terms of Service</h1>
-            <p class="updated">Last updated: July 2026</p>
+        <section class="product-page">
+            <a class="product-back" href="index.html#kits">&larr; Back to shop</a>
+            <div class="product-layout" id="product-layout">
+                <div class="product-gallery">
+                    <div class="product-main-image"><img id="product-main-img" src="" alt=""></div>
+                    <div class="product-thumbs" id="product-thumbs"></div>
+                </div>
+                <div class="product-details">
+                    <span class="tag" id="product-tag"></span>
+                    <h1 id="product-title"></h1>
+                    <p class="price" id="product-price"></p>
 
-            <h2>About KitVLT</h2>
-            <p>KitVLT sells unofficial replica football shirts. We are not affiliated with, endorsed by, or licensed by any football club, federation, league, or player. Club and country names are used only to describe the style of replica shirt on offer.</p>
+                    <div class="product-controls-row">
+                        <div class="control-group">
+                            <label class="size-label" for="product-size">Size</label>
+                            <select class="size-select" id="product-size"></select>
+                        </div>
+                        <div class="control-group">
+                            <span class="size-label">Quantity</span>
+                            <div class="qty-stepper">
+                                <button type="button" class="qty-btn" id="product-qty-down" aria-label="Decrease quantity">&minus;</button>
+                                <span class="qty-value" id="product-qty-value">1</span>
+                                <button type="button" class="qty-btn" id="product-qty-up" aria-label="Increase quantity">&plus;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="size-guide-link" href="size-guide.html">Not sure? See our size guide &rarr;</a>
 
-            <h2>Orders</h2>
-            <p>By placing an order, you're offering to purchase a product at the listed price. We'll confirm your order by email once it's accepted. We reserve the right to decline or cancel an order, for example if an item is out of stock or listed at an incorrect price.</p>
+                    <div class="product-action-row">
+                        <button class="btn btn-ghost-dark product-add" id="product-add" type="button">Add to Basket</button>
+                        <button class="btn btn-primary product-buy" id="product-buy" type="button">Buy Now</button>
+                    </div>
+                    <p class="checkout-error" id="product-buy-error" role="alert"></p>
 
-            <h2>Pricing</h2>
-            <p>All prices are shown in GBP and include applicable taxes unless stated otherwise. We try to keep pricing accurate but errors can occasionally happen; if they do, we'll contact you before proceeding with an affected order.</p>
+                    <ul class="trust-badges">
+                        <li>&#128274; Secure Stripe checkout</li>
+                        <li>&#8617; 30-day returns</li>
+                        <li>&#128666; Free UK delivery over &pound;50</li>
+                    </ul>
 
-            <h2>Product descriptions</h2>
-            <p>We aim to describe and photograph shirts as accurately as possible. Minor variations in color or print may occur between what's shown on screen and the item you receive.</p>
-
-            <h2>Limitation of liability</h2>
-            <p>KitVault is provided on an as-is basis. To the extent permitted by law, we aren't liable for indirect or consequential losses arising from your use of this site.</p>
-
-            <h2>Changes to these terms</h2>
-            <p>We may update these terms from time to time. Continued use of the site after changes are posted means you accept the revised terms.</p>
-
-            <h2>Contact</h2>
-            <p>Questions about these terms can be sent to <a href="mailto:KitVaultCustomerService@gmail.com">KitVaultCustomerService@gmail.com</a>.</p>
+                    <div class="product-info-tabs">
+                        <details class="product-info-block" open><summary>Description</summary><p id="product-description"></p></details>
+                        <details class="product-info-block"><summary>Sizing</summary><p id="product-sizing"></p></details>
+                        <details class="product-info-block"><summary>Shipping</summary><p id="product-shipping"></p></details>
+                        <details class="product-info-block"><summary>Returns</summary><p id="product-returns"></p></details>
+                    </div>
+                </div>
+            </div>
+            <p class="product-not-found" id="product-not-found" hidden>We couldn't find that shirt. <a href="index.html#kits">Back to the shop &rarr;</a></p>
         </section>
     </main>
 
@@ -106,6 +130,38 @@
             <p class="copyright">&copy; 2026 KitVLT. All rights reserved.</p>
         </div>
     </footer>
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-heading">
+            <button class="modal-close" id="cart-close" type="button" aria-label="Close">&times;</button>
+            <div class="cart-view">
+                <h3 id="cart-heading">Your Basket</h3>
+                <div class="cart-items" id="cart-items"></div>
+                <p class="cart-empty" id="cart-empty">Your basket is currently empty.</p>
+                <div class="cart-summary">
+                    <div class="promo-box">
+                        <button class="promo-tab" id="promo-tab" type="button" aria-expanded="false" aria-controls="promo-panel">Have a promo code?</button>
+                        <div class="promo-panel" id="promo-panel" hidden>
+                            <div class="promo-row">
+                                <label class="sr-only" for="promo-input">Promo code</label>
+                                <input type="text" id="promo-input" placeholder="Enter code" autocomplete="off" spellcheck="false">
+                                <button class="btn promo-apply" id="promo-apply" type="button">Apply</button>
+                            </div>
+                            <p class="promo-msg" id="promo-msg" role="status" aria-live="polite"></p>
+                        </div>
+                    </div>
+                    <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">£0.00</span></div>
+                    <div class="cart-row cart-row-discount" id="cart-discount-row" hidden><span id="cart-discount-label">Discount</span><span id="cart-discount">-£0.00</span></div>
+                    <div class="cart-row cart-row-total"><span>Total</span><span id="cart-total">£0.00</span></div>
+                    <a class="btn btn-primary cart-checkout" href="checkout.html">Go to Checkout</a>
+                    <ul class="trust-badges">
+                        <li>&#128274; Secure Stripe checkout</li>
+                        <li>&#8617; 30-day returns</li>
+                        <li>&#128666; Free UK delivery over &pound;50</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <button class="chat-fab" id="chat-fab" type="button" aria-label="Open support chat" aria-expanded="false">
         <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.98 3 3 6.58 3 11c0 2.28 1.06 4.33 2.77 5.77L5 21l4.5-2.1c.8.2 1.63.3 2.5.3 5.02 0 9-3.58 9-8s-3.98-8-9-8z"/></svg>
     </button>
@@ -125,6 +181,8 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="script.js"></script>
+    <script src="promo.js"></script>
+    <script src="product.js"></script>
     <script src="chat.js"></script>
 </body>
 </html>

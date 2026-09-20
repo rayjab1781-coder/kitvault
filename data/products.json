@@ -1,0 +1,402 @@
+[
+  {
+    "id": "real-madrid-home",
+    "name": "Real Madrid Home",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/real-madrid-home.jpg",
+      "images/real-madrid-home-back.jpg",
+      "images/real-madrid-home-detail.jpg"
+    ],
+    "description": "Real Madrid Home shirt. Los Blancos' iconic white — clean, sharp and unmistakably Madrid. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "real-madrid-away",
+    "name": "Real Madrid Away",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/real-madrid-away.jpg",
+      "images/real-madrid-away-back.jpg",
+      "images/real-madrid-away-detail.jpg"
+    ],
+    "description": "Real Madrid Away shirt. Los Blancos' iconic white — clean, sharp and unmistakably Madrid. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "barcelona",
+    "name": "Barcelona Home",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/barcelona.jpg",
+      "images/barcelona-back.jpg",
+      "images/barcelona-detail.jpg"
+    ],
+    "description": "Barcelona Home shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "barcelona-away",
+    "name": "Barcelona Away",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/barcelona-away.jpg",
+      "images/barcelona-away-back.jpg",
+      "images/barcelona-away-detail.jpg"
+    ],
+    "description": "Barcelona Away shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "psg-home",
+    "name": "PSG Home",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/psg-home.jpg",
+      "images/psg-home-back.jpg",
+      "images/psg-home-detail.jpg"
+    ],
+    "description": "PSG Home shirt. Paris flair in every stitch — bold, modern, built for the big stage. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "psg-away",
+    "name": "PSG Away",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/psg-away.jpg",
+      "images/psg-away-back.jpg",
+      "images/psg-away-detail.jpg"
+    ],
+    "description": "PSG Away shirt. Paris flair in every stitch — bold, modern, built for the big stage. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "liverpool-home",
+    "name": "Liverpool Home",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/liverpool-home.jpg",
+      "images/liverpool-home-back.jpg",
+      "images/liverpool-home-detail.jpg"
+    ],
+    "description": "Liverpool Home shirt. The famous red of Anfield, worn by a fanbase that never walks alone. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "manchester-united-home",
+    "name": "Manchester United Home",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/manchester-united-home.jpg",
+      "images/manchester-united-home-back.jpg",
+      "images/manchester-united-home-detail.jpg"
+    ],
+    "description": "Manchester United Home shirt. Old Trafford red, with decades of history behind the badge. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "manchester-united-away",
+    "name": "Manchester United Away",
+    "price": 26.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/manchester-united-away.jpg",
+      "images/manchester-united-away-back.jpg",
+      "images/manchester-united-away-detail.jpg"
+    ],
+    "description": "Manchester United Away shirt. Old Trafford red, with decades of history behind the badge. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "barcelona-dreamwave",
+    "name": "Barcelona Dreamwave",
+    "price": 27.99,
+    "type": "club",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/barcelona-dreamwave.jpg",
+      "images/barcelona-dreamwave-back.jpg",
+      "images/barcelona-dreamwave-detail.jpg"
+    ],
+    "description": "Barcelona Dreamwave shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "brazil",
+    "name": "Brazil Away 2026",
+    "price": 27.99,
+    "type": "international",
+    "era": "new-season",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/brazil.jpg",
+      "images/brazil-back.jpg",
+      "images/brazil-detail.jpg"
+    ],
+    "description": "Brazil Away 2026 shirt. Canary yellow and a legacy of the world's most iconic strip. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "argentina",
+    "name": "Argentina World Cup Messi",
+    "price": 34.99,
+    "type": "international",
+    "era": "retro",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/argentina.jpg",
+      "images/argentina-back.jpg",
+      "images/argentina-detail.jpg"
+    ],
+    "description": "Argentina World Cup Messi shirt. Albiceleste stripes that carried a nation to World Cup glory. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "brazil-2002-r9",
+    "name": "Brazil R9 2002",
+    "price": 34.99,
+    "type": "international",
+    "era": "retro",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/brazil-2002-r9.jpg",
+      "images/brazil-2002-r9-back.jpg",
+      "images/brazil-2002-r9-detail.jpg"
+    ],
+    "description": "Brazil R9 2002 shirt. Canary yellow and a legacy of the world's most iconic strip. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "portugal-home-cr7",
+    "name": "Portugal CR7",
+    "price": 34.99,
+    "type": "international",
+    "era": "retro",
+    "featured": false,
+    "stock": "coming-soon",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/portugal-home-cr7.jpg",
+      "images/portugal-home-cr7-back.jpg",
+      "images/portugal-home-cr7-detail.jpg"
+    ],
+    "description": "Portugal CR7 shirt. The red of Portugal, worn by one of the game's greatest ever No.7s. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "france-1998-zidane",
+    "name": "France 1998 Zidane",
+    "price": 34.99,
+    "type": "international",
+    "era": "retro",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/france-1998-zidane.jpg",
+      "images/france-1998-zidane-back.jpg",
+      "images/france-1998-zidane-detail.jpg"
+    ],
+    "description": "France 1998 Zidane shirt. Les Bleus blue, from an era defined by a generational midfielder. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  },
+  {
+    "id": "ac-milan-2006-kaka",
+    "name": "AC Milan Kaká 2006 Away",
+    "price": 34.99,
+    "type": "club",
+    "era": "retro",
+    "featured": true,
+    "stock": "in-stock",
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "images": [
+      "images/ac-milan-2006-kaka.jpg",
+      "images/ac-milan-2006-kaka-back.jpg",
+      "images/ac-milan-2006-kaka-detail.jpg"
+    ],
+    "description": "AC Milan Kaká 2006 Away shirt. Rossoneri stripes from a golden era of Serie A football. Unofficial replica, printed on quality breathable fabric.",
+    "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
+    "shippingNote": "Dispatched within 2–4 business days. Free UK delivery on orders over £50.",
+    "returnsNote": "Unworn, unwashed returns accepted within 30 days of delivery. See Shipping & Returns for full details."
+  }
+]
