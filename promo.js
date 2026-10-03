@@ -1,91 +1,37 @@
-// Real promo codes. Applying a code calls validate-promo, which asks Stripe
-// for the ACTUAL discount — nothing is calculated locally or faked, so the
-// total shown is the total Stripe will charge.
 (function () {
   const tab = document.getElementById('promo-tab');
   if (!tab) return;
-  const panel = document.getElementById('promo-panel');
-  const input = document.getElementById('promo-input');
-  const applyBtn = document.getElementById('promo-apply');
-  const msg = document.getElementById('promo-msg');
-  const dRow = document.getElementById('cart-discount-row');
-  const dLabel = document.getElementById('cart-discount-label');
-  const dEl = document.getElementById('cart-discount');
-  const totalEl = document.getElementById('cart-total');
-
+  const panel = document.getElementById('promo-panel'); const input = document.getElementById('promo-input');
+  const applyButton = document.getElementById('promo-apply'); const message = document.getElementById('promo-msg');
   tab.addEventListener('click', () => {
-    const open = panel.hidden;
-    panel.hidden = !open;
-    tab.setAttribute('aria-expanded', String(open));
-    if (open && input) {
-      const saved = window.KitVLTBasket.getPromo();
-      if (saved) input.value = saved.code;
-      input.focus();
-    }
+    panel.hidden = !panel.hidden; tab.setAttribute('aria-expanded', String(!panel.hidden));
+    if (!panel.hidden) { input.value = window.KitVLTBasket.getPromo()?.code || ''; input.focus(); }
   });
-
-  function paint(subtotal, r) {
-    if (r && r.valid) {
-      if (dRow) dRow.hidden = false;
-      if (dLabel) dLabel.textContent = 'Discount (' + r.code + ')';
-      if (dEl) dEl.textContent = '-£' + r.discount.toFixed(2);
-      if (totalEl) totalEl.textContent = '£' + r.total.toFixed(2);
-    } else {
-      if (dRow) dRow.hidden = true;
-      if (totalEl) totalEl.textContent = '£' + subtotal.toFixed(2);
-    }
+  function paint() {
+    const summary = window.KitVLTBasket.getSummary();
+    document.getElementById('cart-discount-row').hidden = !summary.promo;
+    document.getElementById('cart-discount-label').textContent = `Discount (${summary.promo?.code || ''})`;
+    document.getElementById('cart-discount').textContent = '−' + window.KitVLTMoney(Math.round(summary.discount * 100));
+    document.getElementById('cart-total').textContent = window.KitVLTMoney(Math.round(summary.total * 100));
+    const remove = document.getElementById('promo-remove'); if (remove) remove.hidden = !summary.promo;
   }
-
-  async function apply() {
-    const code = (input.value || '').trim();
-    if (!code) { msg.textContent = 'Enter a code first.'; msg.className = 'promo-msg err'; return; }
-
-    const subtotal = await window.KitVLTBasket.subtotal();
-    if (subtotal === 0) { msg.textContent = 'Add something to your basket first.'; msg.className = 'promo-msg err'; return; }
-
-    applyBtn.disabled = true; applyBtn.textContent = 'Checking…';
+  async function apply(code) {
+    applyButton.disabled = true; applyButton.textContent = 'Checking…';
     try {
-      const res = await fetch('/.netlify/functions/validate-promo', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, subtotal })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.valid) {
-        window.KitVLTBasket.setPromo(null);
-        msg.textContent = (data && data.message) || "That code isn't valid.";
-        msg.className = 'promo-msg err';
-        paint(subtotal, null);
-        return;
-      }
-      window.KitVLTBasket.setPromo({ id: data.id, code: data.code, label: data.label });
-      msg.textContent = data.code + ' applied — ' + data.label + '.';
-      msg.className = 'promo-msg ok';
-      paint(subtotal, data);
-    } catch (err) {
-      msg.textContent = 'Could not check that code right now — try again.';
-      msg.className = 'promo-msg err';
-    } finally {
-      applyBtn.disabled = false; applyBtn.textContent = 'Apply';
-    }
+      await window.KitVLTBasket.setPromo(code);
+      const promo = window.KitVLTBasket.getPromo();
+      message.textContent = promo ? `${promo.code} applied — ${promo.label}. First orders only.` : 'Discount removed.';
+      message.className = 'promo-msg ok'; paint();
+    } catch (error) { message.textContent = error.message; message.className = 'promo-msg err'; }
+    finally { applyButton.disabled = false; applyButton.textContent = 'Apply'; }
   }
-
-  if (applyBtn) applyBtn.addEventListener('click', apply);
-  if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); apply(); } });
-
-  // Re-validates any stored code whenever the basket changes.
-  window.KitVLTPromo = {
-    async refresh(subtotal) {
-      const saved = window.KitVLTBasket.getPromo();
-      if (!saved) { paint(subtotal, null); return; }
-      try {
-        const res = await fetch('/.netlify/functions/validate-promo', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: saved.code, subtotal })
-        });
-        const data = await res.json();
-        if (res.ok && data.valid) paint(subtotal, data);
-        else { window.KitVLTBasket.setPromo(null); paint(subtotal, null); }
-      } catch (e) { paint(subtotal, null); }
-    }
-  };
+  applyButton.addEventListener('click', () => {
+    const code = input.value.trim();
+    if (!code) { message.textContent = 'Enter a code first.'; message.className = 'promo-msg err'; return; }
+    apply(code);
+  });
+  input.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); applyButton.click(); } });
+  document.getElementById('promo-remove')?.addEventListener('click', () => apply(''));
+  window.KitVLTPromo = { refresh: paint };
+  document.addEventListener('kitvlt:basket', paint); window.KitVLTBasket.ready.then(paint);
 })();

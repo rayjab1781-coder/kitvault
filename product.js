@@ -1,101 +1,72 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const id = new URLSearchParams(window.location.search).get('id');
-  const products = await window.KitVLTBasket.loadProducts();
-  const p = products.find((x) => x.id === id);
-
-  const layout = document.getElementById('product-layout');
-  const notFound = document.getElementById('product-not-found');
-  if (!p) { if (layout) layout.hidden = true; if (notFound) notFound.hidden = false; return; }
-
-  document.title = p.name + ' | KitVLT';
-
-  const tag = p.featured ? { label: 'Featured', cls: 'tag-trending' }
-    : (p.era === 'retro' ? { label: 'Retro', cls: 'tag-retro' } : { label: 'New Season', cls: 'tag-current' });
-  const tagEl = document.getElementById('product-tag');
-  if (tagEl) { tagEl.textContent = tag.label; tagEl.className = 'tag ' + tag.cls; }
-
-  document.getElementById('product-title').textContent = p.name;
-  document.getElementById('product-price').textContent = '£' + p.price.toFixed(2);
-  document.getElementById('product-description').textContent = p.description;
-  document.getElementById('product-sizing').textContent = p.sizingNote;
-  document.getElementById('product-shipping').textContent = p.shippingNote;
-  document.getElementById('product-returns').textContent = p.returnsNote;
-
-  // Gallery
-  const mainImg = document.getElementById('product-main-img');
-  const thumbs = document.getElementById('product-thumbs');
-  const gallery = p.images && p.images.length ? p.images : [];
-
-  function setImage(src) {
-    mainImg.src = src;
-    mainImg.alt = p.name;
-    mainImg.onerror = () => {
-      mainImg.onerror = null;
-      mainImg.classList.add('img-missing');
-      mainImg.src = "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ffffff' d='M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z'/%3E%3C/svg%3E";
-    };
-    if (thumbs) thumbs.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b.getAttribute('data-src') === src));
+  const loading = document.getElementById('product-loading'); const content = document.getElementById('product-content');
+  const missing = document.getElementById('product-not-found'); const id = new URLSearchParams(location.search).get('id');
+  let products;
+  try { products = await window.KitVLTBasket.loadProducts(); } catch (error) { loading.textContent = error.message; return; }
+  const product = products.find((entry) => entry.id === id);
+  loading.hidden = true;
+  if (!product) { missing.hidden = false; return; }
+  content.hidden = false; document.title = `${product.name} | KitVLT`;
+  document.querySelector('meta[name="description"]').content = product.description;
+  const fields = { 'product-name': product.name, 'product-price': `£${product.price.toFixed(2)}`, 'product-description': product.description, 'product-sizing': product.sizingNote, 'product-shipping': product.shippingNote, 'product-returns': product.returnsNote, 'product-breadcrumb-name': product.name };
+  for (const [identifier, text] of Object.entries(fields)) { const element = document.getElementById(identifier); if (element) element.textContent = text; }
+  const availability = document.getElementById('product-stock');
+  availability.textContent = product.stock === 'in-stock' ? 'Available to order' : product.stock === 'coming-soon' ? 'Coming soon · not available to order' : 'Sold out';
+  availability.className = 'product-stock ' + product.stock;
+  const hero = document.getElementById('product-main-img'); const thumbnails = document.getElementById('product-thumbs');
+  const setImage = (source) => {
+    hero.src = source; hero.alt = product.name;
+    hero.onerror = () => { hero.hidden = true; document.getElementById('image-error').hidden = false; };
+    thumbnails?.querySelectorAll('button').forEach((button) => { button.setAttribute('aria-pressed', String(button.dataset.src === source)); });
+  };
+  setImage(product.images[0]);
+  if (thumbnails && product.images.length > 1) {
+    thumbnails.classList.add('visible');
+    for (const [index, source] of product.images.entries()) {
+      const button = document.createElement('button'); button.type = 'button'; button.dataset.src = source;
+      button.setAttribute('aria-label', `${product.name}, image ${index + 1}`); button.setAttribute('aria-pressed', String(index === 0));
+      const image = document.createElement('img'); image.src = source; image.alt = ''; image.loading = 'lazy'; button.appendChild(image);
+      button.addEventListener('click', () => setImage(source)); thumbnails.appendChild(button);
+    }
   }
-  if (gallery.length) setImage(gallery[0]);
-
-  if (thumbs && gallery.length > 1) {
-    thumbs.innerHTML = '';
-    gallery.forEach((src) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('data-src', src);
-      b.setAttribute('aria-label', 'Show ' + p.name + ' photo');
-      b.innerHTML = '<img src="' + src + '" alt="" onerror="this.parentElement.style.display=\'none\'">';
-      b.addEventListener('click', () => setImage(src));
-      thumbs.appendChild(b);
+  let selectedSize = ''; let quantity = 1;
+  const sizes = document.getElementById('product-sizes'); const error = document.getElementById('product-buy-error');
+  for (const size of product.sizes) {
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'size-button'; button.textContent = size;
+    button.setAttribute('aria-pressed', 'false'); button.disabled = product.stock !== 'in-stock';
+    button.addEventListener('click', () => {
+      selectedSize = size; error.textContent = '';
+      sizes.querySelectorAll('button').forEach((option) => option.setAttribute('aria-pressed', String(option === button)));
     });
-    thumbs.classList.add('visible');
+    sizes.appendChild(button);
   }
-
-  // Sizes
-  const sizeSel = document.getElementById('product-size');
-  sizeSel.innerHTML = p.sizes.map((s) => '<option value="' + s + '"' + (s === 'M' ? ' selected' : '') + '>' + s + '</option>').join('');
-
-  // Quantity
-  let qty = 1;
-  const qtyVal = document.getElementById('product-qty-value');
-  document.getElementById('product-qty-down').addEventListener('click', () => { qty = Math.max(1, qty - 1); qtyVal.textContent = qty; });
-  document.getElementById('product-qty-up').addEventListener('click', () => { qty = Math.min(10, qty + 1); qtyVal.textContent = qty; });
-
-  const addBtn = document.getElementById('product-add');
-  const buyBtn = document.getElementById('product-buy');
-  const errEl = document.getElementById('product-buy-error');
-
-  if (p.stock !== 'in-stock') {
-    const label = p.stock === 'coming-soon' ? 'Coming Soon' : 'Out of Stock';
-    [addBtn, buyBtn].forEach((b) => { b.disabled = true; b.textContent = label; });
-    sizeSel.disabled = true;
-    document.getElementById('product-qty-down').disabled = true;
-    document.getElementById('product-qty-up').disabled = true;
+  const quantityValue = document.getElementById('product-qty-value');
+  const decrease = document.getElementById('product-qty-down'); const increase = document.getElementById('product-qty-up');
+  const updateQuantity = (value) => { quantity = Math.min(10, Math.max(1, value)); quantityValue.textContent = quantity; decrease.disabled = quantity === 1; increase.disabled = quantity === 10; };
+  decrease.addEventListener('click', () => updateQuantity(quantity - 1)); increase.addEventListener('click', () => updateQuantity(quantity + 1)); updateQuantity(1);
+  const add = document.getElementById('product-add'); const buy = document.getElementById('product-buy');
+  if (product.stock !== 'in-stock') {
+    [add, buy, decrease, increase].forEach((button) => { button.disabled = true; });
+    add.textContent = product.stock === 'coming-soon' ? 'Coming soon' : 'Out of stock'; buy.hidden = true;
   } else {
-    addBtn.addEventListener('click', async () => {
-      await window.KitVLTBasket.add(p.id, sizeSel.value, qty);
-      window.KitVLTToast(p.name + ' (Size ' + sizeSel.value + ' × ' + qty + ') added to your basket');
-    });
-
-    buyBtn.addEventListener('click', async () => {
-      errEl.textContent = '';
-      buyBtn.disabled = true;
-      const orig = buyBtn.textContent;
-      buyBtn.textContent = 'Redirecting…';
+    async function addToBasket(checkout) {
+      error.textContent = '';
+      if (!selectedSize) { error.textContent = 'Please select a size.'; sizes.querySelector('button').focus(); return; }
+      add.disabled = true; buy.disabled = true;
+      const label = add.textContent; add.textContent = 'Adding…';
       try {
-        const res = await fetch('/.netlify/functions/create-checkout-session', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: [{ productId: p.id, size: sizeSel.value, quantity: qty }] })
-        });
-        const data = await res.json();
-        if (!res.ok || !data.url) throw new Error(data.error || 'failed');
-        window.location.href = data.url;
-      } catch (err) {
-        errEl.textContent = "Couldn't start checkout — please try again.";
-        buyBtn.disabled = false;
-        buyBtn.textContent = orig;
-      }
-    });
+        await window.KitVLTBasket.add(product.id, selectedSize, quantity);
+        window.KitVLTToast(`${product.name} — ${selectedSize} × ${quantity} added to your basket`);
+        if (checkout) window.location.href = 'checkout.html';
+      } catch (issue) { error.textContent = issue.message; }
+      finally { add.disabled = false; buy.disabled = false; add.textContent = label; }
+    }
+    add.addEventListener('click', () => addToBasket(false)); buy.addEventListener('click', () => addToBasket(true));
+  }
+  const related = document.getElementById('related-products');
+  if (related) {
+    const escape = window.KitVLTEscape;
+    const choices = products.filter((entry) => entry.id !== product.id && entry.era === product.era).sort((first, second) => Number(second.stock === 'in-stock') - Number(first.stock === 'in-stock')).slice(0, 3);
+    related.innerHTML = choices.map((entry) => `<article class="card"><a class="card-image-link" href="product.html?id=${encodeURIComponent(entry.id)}" target="_blank" rel="noopener" aria-label="${escape(entry.name)} — opens in a new tab"><div class="card-image"><img src="${escape(entry.images[0])}" alt="${escape(entry.name)}" loading="lazy" width="480" height="600"></div></a><div class="card-body"><a href="product.html?id=${encodeURIComponent(entry.id)}" target="_blank" rel="noopener"><h3>${escape(entry.name)}</h3></a><p class="price">£${entry.price.toFixed(2)}</p></div></article>`).join('');
   }
 });

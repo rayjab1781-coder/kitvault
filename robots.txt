@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /KitVault/
+Disallow: /server/
+Disallow: /db/
+Disallow: /.netlify/functions/
+
+Sitemap: https://kitvault.website/sitemap.xml
