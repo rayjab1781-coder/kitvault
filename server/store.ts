@@ -3,7 +3,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import { db } from '../db/index';
 import { baskets, basketItems, orders, rateLimits } from '../db/schema';
 import products from '../data/products.json';
-import { calculateDiscount, promotions } from './promotions';
+import { evaluatePromotion, getPromotion } from './promotions';
 
 export { products, db, baskets, basketItems, orders, eq, and };
 
@@ -55,22 +55,24 @@ export function validateItem(item: { productId: string; size: string; quantity: 
   return product;
 }
 
-export async function basket(id: string) {
+export async function basket(id: string, requestedCode?: string | null) {
   const items = await db.select({ productId: basketItems.productId, size: basketItems.size, quantity: basketItems.quantity }).from(basketItems).where(eq(basketItems.basketId, id));
   const [stored] = await db.select().from(baskets).where(eq(baskets.id, id));
-  const subtotal = items.reduce((total, item) => {
+  const totals = items.reduce((total, item) => {
     const product = products.find((entry) => entry.id === item.productId);
-    return total + (product ? Math.round(product.price * 100) * item.quantity : 0);
-  }, 0);
-  const code = stored?.promoCode || null;
-  let discount = 0;
-  try { discount = calculateDiscount(subtotal, code); } catch { }
-  const promo = code && promotions[code]?.active ? { code, label: `${promotions[code].percent}% off`, valid: true, discount: discount / 100, total: (subtotal - discount) / 100 } : null;
+    const amount = product ? Math.round(product.price * 100) * item.quantity : 0;
+    return { subtotal: total.subtotal + amount, retroSubtotal: total.retroSubtotal + (product?.era === 'retro' ? amount : 0) };
+  }, { subtotal: 0, retroSubtotal: 0 });
+  const subtotal = totals.subtotal;
+  const code = requestedCode === undefined ? stored?.promoCode || null : requestedCode;
+  const result = evaluatePromotion(subtotal, totals.retroSubtotal, code);
+  const discount = result?.discount || 0;
+  const promo = result ? { ...result, discount: result.discount / 100, total: result.total / 100 } : null;
   return { items, subtotal: subtotal / 100, discount: discount / 100, total: (subtotal - discount) / 100, promo };
 }
 
 export async function checkEligibility(email: string, code: string | null) {
-  if (!code || !promotions[code]?.firstOrderOnly) return;
+  if (!code || !getPromotion(code)?.firstOrderOnly) return;
   const [previous] = await db.select({ id: orders.id }).from(orders).where(and(eq(orders.email, email.toLowerCase()), eq(orders.status, 'paid'))).limit(1);
   if (previous) throw new StoreError(`${code} is for your first order. Please remove the code to continue.`);
 }
@@ -83,7 +85,9 @@ export async function limit(request: Request, action: string, maximum: number) {
   if (record.count > maximum) throw new StoreError('Too many requests. Please try again in a minute.', 429);
 }
 
-export function shippingQuote(country: string, subtotal: number) {
+export function shippingQuote(country: string, subtotal: number, code: string | null = null) {
+  const promotion = getPromotion(code);
+  if (promotion?.active && promotion.type === 'free-shipping') return 0;
   if (country === 'GB' && subtotal > 5000) return 0;
   const setting = country === 'GB' ? process.env.KITVLT_UK_SHIPPING_PENCE : process.env.KITVLT_INTERNATIONAL_SHIPPING_PENCE;
   if (!setting || !/^\d+$/.test(setting)) return null;

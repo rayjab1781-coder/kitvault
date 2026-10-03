@@ -1,6 +1,6 @@
 import { db, basketItems, baskets, basket, session, body, json, failure, validateItem, eq, and, StoreError } from '../../server/store';
 import { sql } from 'drizzle-orm';
-import { promotions } from '../../server/promotions';
+import { normalizePromoCode } from '../../server/promotions';
 
 export default async (request: Request) => {
   try {
@@ -19,9 +19,11 @@ export default async (request: Request) => {
         } else await db.update(basketItems).set({ quantity }).where(match);
       } else if (action === 'remove') await db.delete(basketItems).where(match);
       else if (action === 'promo') {
-        const code = String(payload.code || '').trim().toUpperCase();
-        if (code && !promotions[code]?.active) throw new StoreError("That code isn't valid or has expired.");
-        if (code && !(await basket(current.id)).items.length) throw new StoreError('Add a shirt to your basket first.');
+        const code = normalizePromoCode(payload.code);
+        if (code) {
+          const summary = await basket(current.id, code);
+          if (!summary.promo?.valid) throw new StoreError(summary.promo?.message || 'Unable to apply this code.');
+        }
         await db.update(baskets).set({ promoCode: code || null }).where(eq(baskets.id, current.id));
       } else if (action === 'import') {
         const existing = await basket(current.id);

@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function quote() {
     const revision = ++quoting;
     pay.disabled = true;
+    shipping.textContent = 'Calculating…';
     if (!window.KitVLTBasket.getRaw().length) { shipping.textContent = '—'; return; }
     try {
       const response = await fetch('/.netlify/functions/checkout-quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ country: country.value, email: form.elements.email.value.trim() }) });
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (summary.shipping === null) { status.textContent = 'Delivery rates for this destination are not connected yet. Please contact KitVLT before ordering.'; pay.textContent = 'Delivery rate unavailable'; }
       else { status.textContent = 'Your order is ready for secure Stripe payment. No card details are stored by KitVLT.'; pay.textContent = 'Continue to secure payment'; pay.disabled = submitting; }
       error.textContent = '';
-    } catch (problem) { if (revision === quoting) { error.textContent = problem.message; status.textContent = 'Please resolve the order message before payment.'; } }
+    } catch (problem) { if (revision === quoting) { shipping.textContent = '—'; error.textContent = problem.message; status.textContent = 'Please resolve the order message before payment.'; } }
   }
   const render = async () => {
     try {
