@@ -139,10 +139,10 @@
                         <div class="promo-panel" id="promo-panel" hidden>
                             <div class="promo-row">
                                 <label class="sr-only" for="promo-input">Promo code</label>
-                                <input type="text" id="promo-input" placeholder="Enter code" autocomplete="off" spellcheck="false">
+                                <input type="text" id="promo-input" placeholder="Enter your promo code" autocomplete="off" spellcheck="false" maxlength="32" aria-describedby="promo-help promo-msg">
                                 <button class="btn promo-apply" id="promo-apply" type="button">Apply</button>
                             </div>
-                            <button class="text-button" id="promo-remove" type="button" hidden>Remove discount</button><p class="promo-msg" id="promo-msg" role="status" aria-live="polite"></p>
+                            <p class="promo-help" id="promo-help">One code per order. Percentage discounts apply to shirts; free shipping is calculated at checkout.</p><button class="text-button" id="promo-remove" type="button" hidden>Remove code</button><p class="promo-msg" id="promo-msg" role="status" aria-live="polite"></p>
                         </div>
                     </div>
                     <div class="cart-row"><span>Subtotal</span><span id="cart-subtotal">£0.00</span></div>

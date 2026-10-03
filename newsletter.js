@@ -1,13 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('newsletter-overlay');
   const dialog = overlay ? window.KitVLTDialog(overlay, document.getElementById('newsletter-close')) : null;
-  const remember = () => { document.cookie = 'kitvlt_newsletter_seen=1; Path=/; SameSite=Lax; Max-Age=2592000'; };
+  const hasSeenOffer = () => document.cookie.split(';').some((cookie) => cookie.trim().startsWith('kitvlt_newsletter_seen='));
+  const remember = () => { document.cookie = `kitvlt_newsletter_seen=1; Path=/; SameSite=Lax; Max-Age=31536000${location.protocol === 'https:' ? '; Secure' : ''}`; };
   overlay?.addEventListener('kitvlt:close', remember);
   document.querySelectorAll('[data-open-newsletter]').forEach((button) => button.addEventListener('click', () => dialog?.open()));
-  if (dialog && !document.cookie.includes('kitvlt_newsletter_seen=') && !new URLSearchParams(location.search).has('collection')) {
-    setTimeout(() => {
-      if (!document.querySelector('.cart-overlay.visible, .chat-panel.open') && document.visibilityState === 'visible') { remember(); dialog.open(); }
-    }, 18000);
+  document.querySelectorAll('[data-dismiss-newsletter]').forEach((button) => button.addEventListener('click', () => dialog?.close()));
+  if (dialog && !hasSeenOffer()) {
+    const showWelcome = () => {
+      if (hasSeenOffer()) return;
+      const busy = document.querySelector('.cart-overlay.visible, .chat-panel.open, #site-nav.open') || document.activeElement?.matches('input, textarea, select, [contenteditable="true"]');
+      if (busy || document.visibilityState !== 'visible') {
+        setTimeout(showWelcome, 3000);
+        return;
+      }
+      remember();
+      dialog.open();
+    };
+    setTimeout(showWelcome, 8000);
   }
   document.querySelectorAll('[data-newsletter-form]').forEach((form) => form.addEventListener('submit', async (event) => {
     event.preventDefault();

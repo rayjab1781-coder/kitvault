@@ -10,6 +10,7 @@ export default async (request: Request) => {
     await limit(request, 'checkout', 10);
     const summary = await basket(current.id);
     if (!summary.items.length) throw new StoreError('Your basket is empty.');
+    if (summary.promo && !summary.promo.valid) throw new StoreError(summary.promo.message);
     summary.items.forEach(validateItem);
     const customer = input.customer;
     if (!customer || typeof customer !== 'object') throw new StoreError('Please enter your contact and shipping details.');
@@ -22,11 +23,11 @@ export default async (request: Request) => {
     if (!['GB', 'IE', 'US', 'CA', 'AU', 'FR', 'DE', 'ES', 'IT', 'NL'].includes(clean.country)) throw new StoreError('This shipping destination is not supported.');
     const subtotal = Math.round(summary.subtotal * 100);
     const discount = Math.round(summary.discount * 100);
-    const shipping = shippingQuote(clean.country, subtotal);
+    const shipping = shippingQuote(clean.country, subtotal, summary.promo?.code || null);
     if (shipping === null) throw new StoreError('Delivery rates for this destination are not connected yet. Please contact KitVLT before ordering.', 503);
     await checkEligibility(clean.email, summary.promo?.code || null);
     const stripe = stripeClient();
-    const key = fingerprint({ basket: current.id, items: summary.items, subtotal, discount, shipping, customer: clean, window: Math.floor(Date.now() / 1800000) });
+    const key = fingerprint({ basket: current.id, items: summary.items, subtotal, discount, shipping, promoCode: summary.promo?.code || null, customer: clean, window: Math.floor(Date.now() / 1800000) });
     const [existing] = await db.select().from(orders).where(eq(orders.checkoutKey, key));
     if (existing?.status === 'paid') throw new StoreError('This checkout is already paid. Refresh your basket.');
     const reference = existing ? (existing.customer as { reference: string }).reference : orderNumber();
@@ -45,9 +46,9 @@ export default async (request: Request) => {
       }),
       shipping_address_collection: { allowed_countries: [clean.country as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry] },
       customer_update: { shipping: 'auto', name: 'auto' },
-      shipping_options: [{ shipping_rate_data: { type: 'fixed_amount', fixed_amount: { amount: shipping, currency: 'gbp' }, display_name: shipping === 0 ? 'Free UK delivery' : 'Standard delivery' } }],
+      shipping_options: [{ shipping_rate_data: { type: 'fixed_amount', fixed_amount: { amount: shipping, currency: 'gbp' }, display_name: shipping === 0 ? 'Free delivery' : 'Standard delivery' } }],
       discounts: coupon ? [{ coupon: coupon.id }] : undefined,
-      metadata: { reference },
+      metadata: { reference, promoCode: summary.promo?.code || '' },
       success_url: `${siteUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/checkout.html?cancelled=1`,
     }, { idempotencyKey: key });
