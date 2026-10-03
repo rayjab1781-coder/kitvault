@@ -1,176 +1,149 @@
-// script.js — site chrome + the basket engine.
-// Basket stores only {productId, size, quantity}; names/prices/images are
-// always looked up fresh from data/products.json, so nothing goes stale.
-
-const CART_KEY = 'kitvlt-cart';
-const PROMO_KEY = 'kitvlt-promo';
-let PRODUCTS_CACHE = null;
-
-async function loadProducts() {
-  if (PRODUCTS_CACHE) return PRODUCTS_CACHE;
-  try {
-    const res = await fetch('data/products.json');
-    PRODUCTS_CACHE = await res.json();
-  } catch (err) {
-    console.error('Could not load catalogue:', err);
-    PRODUCTS_CACHE = [];
-  }
-  return PRODUCTS_CACHE;
+let cataloguePromise;
+let basketState = { items: [], subtotal: 0, discount: 0, total: 0, promo: null };
+function loadProducts() {
+  if (!cataloguePromise) cataloguePromise = fetch('/data/products.json').then(async (response) => {
+    if (!response.ok) throw new Error('The catalogue could not load. Please try again.');
+    return response.json();
+  }).catch((error) => { cataloguePromise = null; throw error; });
+  return cataloguePromise;
 }
-
-function loadCart() {
-  try { const r = localStorage.getItem(CART_KEY); return r ? JSON.parse(r) : []; }
-  catch (e) { return []; }
+window.KitVLTEscape = (value) => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+window.KitVLTMoney = (pence) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(pence / 100);
+window.KitVLTImage = (source, width) => '/.netlify/images?url=' + encodeURIComponent('/' + source) + '&w=' + width + '&q=85';
+window.KitVLTToast = (message) => {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('visible');
+  clearTimeout(window.KitVLTToast.timer);
+  window.KitVLTToast.timer = setTimeout(() => toast.classList.remove('visible'), 4500);
+};
+const basketChannel = 'BroadcastChannel' in window ? new BroadcastChannel('kitvlt-basket') : null;
+function publishBasket(state, broadcast = false) {
+  basketState = state;
+  const badge = document.getElementById('cart-count');
+  if (badge) badge.textContent = String(state.items.reduce((total, item) => total + item.quantity, 0));
+  document.dispatchEvent(new CustomEvent('kitvlt:basket', { detail: state }));
+  if (broadcast && basketChannel) basketChannel.postMessage('changed');
+  return state.items;
 }
-function saveCart(c) {
-  try { localStorage.setItem(CART_KEY, JSON.stringify(c)); } catch (e) {}
+async function basketRequest(payload) {
+  const response = await fetch('/.netlify/functions/cart', payload ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) } : {});
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || 'Your basket could not update. Please try again.');
+  return data;
 }
-function loadPromo() {
-  try { const r = localStorage.getItem(PROMO_KEY); return r ? JSON.parse(r) : null; }
-  catch (e) { return null; }
+const basketReady = basketRequest().then(async (state) => {
+  let previous;
+  try { previous = JSON.parse(localStorage.getItem('kitvlt-cart') || 'null'); } catch { }
+  if (Array.isArray(previous) && previous.length && !state.items.length) state = await basketRequest({ action: 'import', items: previous });
+  try { localStorage.removeItem('kitvlt-cart'); localStorage.removeItem('kitvlt-promo'); } catch { }
+  return publishBasket(state);
+}).catch((error) => {
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => window.KitVLTToast(error.message), { once: true });
+  else window.KitVLTToast(error.message);
+  return [];
+});
+async function changeBasket(payload) {
+  await basketReady;
+  return publishBasket(await basketRequest(payload), true);
 }
-function savePromo(p) {
-  try { p ? localStorage.setItem(PROMO_KEY, JSON.stringify(p)) : localStorage.removeItem(PROMO_KEY); } catch (e) {}
-}
-
-function badge() {
-  const el = document.getElementById('cart-count');
-  if (!el) return;
-  el.textContent = String(loadCart().reduce((s, i) => s + i.quantity, 0));
-  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
-}
-
 window.KitVLTBasket = {
-  async add(productId, size, quantity) {
-    const cart = loadCart();
-    const found = cart.find((i) => i.productId === productId && i.size === size);
-    if (found) found.quantity = Math.min(10, found.quantity + quantity);
-    else cart.push({ productId, size, quantity: Math.min(10, Math.max(1, quantity)) });
-    saveCart(cart); badge(); return cart;
-  },
-  setQuantity(productId, size, quantity) {
-    let cart = loadCart();
-    if (quantity <= 0) cart = cart.filter((i) => !(i.productId === productId && i.size === size));
-    else { const f = cart.find((i) => i.productId === productId && i.size === size); if (f) f.quantity = Math.min(10, quantity); }
-    saveCart(cart); badge(); return cart;
-  },
-  remove(productId, size) {
-    const cart = loadCart().filter((i) => !(i.productId === productId && i.size === size));
-    saveCart(cart); badge(); return cart;
-  },
-  clear() { saveCart([]); savePromo(null); badge(); },
-  getRaw: loadCart,
-  getPromo: loadPromo,
-  setPromo: savePromo,
-  loadProducts,
-  async subtotal() {
-    const products = await loadProducts();
-    return loadCart().reduce((s, i) => {
-      const p = products.find((x) => x.id === i.productId);
-      return s + (p ? p.price * i.quantity : 0);
-    }, 0);
-  }
+  ready: basketReady, loadProducts,
+  async refresh() { await basketReady; return publishBasket(await basketRequest()); },
+  add: (productId, size, quantity) => changeBasket({ action: 'add', productId, size, quantity }),
+  setQuantity: (productId, size, quantity) => changeBasket({ action: quantity <= 0 ? 'remove' : 'quantity', productId, size, quantity }),
+  remove: (productId, size) => changeBasket({ action: 'remove', productId, size }),
+  getRaw: () => basketState.items,
+  getPromo: () => basketState.promo,
+  setPromo: (code) => changeBasket({ action: 'promo', code: typeof code === 'string' ? code : code?.code || '' }),
+  getSummary: () => basketState,
+  async subtotal() { await basketReady; return basketState.subtotal; },
 };
-
-window.KitVLTToast = function (msg) {
-  const t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add('visible');
-  clearTimeout(window.KitVLTToast._t);
-  window.KitVLTToast._t = setTimeout(() => t.classList.remove('visible'), 2600);
-};
-
-// Renders basket rows into a container. Shared by the drawer and checkout page.
-window.KitVLTRenderBasket = async function (itemsEl, subtotalEl, emptyEl, onChange) {
+if (basketChannel) basketChannel.onmessage = () => window.KitVLTBasket.refresh().catch((error) => window.KitVLTToast(error.message));
+window.addEventListener('focus', () => window.KitVLTBasket.refresh().catch(() => {}));
+window.KitVLTRenderBasket = async (itemsElement, subtotalElement, emptyElement, onChange) => {
+  if (!itemsElement) return;
+  await basketReady;
   const products = await loadProducts();
-  const cart = loadCart();
-  itemsEl.innerHTML = '';
-  if (emptyEl) emptyEl.classList.toggle('visible', cart.length === 0);
-
-  let subtotal = 0;
-  cart.forEach((item) => {
-    const p = products.find((x) => x.id === item.productId);
-    if (!p) return;
-    subtotal += p.price * item.quantity;
-
+  const summary = basketState;
+  const escape = window.KitVLTEscape;
+  itemsElement.replaceChildren();
+  if (emptyElement) emptyElement.classList.toggle('visible', summary.items.length === 0);
+  for (const item of summary.items) {
+    const product = products.find((entry) => entry.id === item.productId);
+    if (!product) continue;
     const row = document.createElement('div');
     row.className = 'cart-item';
-    row.innerHTML =
-      '<div class="cart-item-img"><img src="' + p.images[0] + '" alt="' + p.name + '" onerror="this.classList.add(\'img-missing\')"></div>' +
-      '<div class="cart-item-info"><h4>' + p.name + '</h4>' +
-      '<div class="cart-item-meta">Size ' + item.size + ' &middot; £' + p.price.toFixed(2) + ' each</div>' +
-      '<div class="qty-stepper"><button type="button" class="qty-btn qty-down" aria-label="Decrease quantity">&minus;</button>' +
-      '<span class="qty-value">' + item.quantity + '</span>' +
-      '<button type="button" class="qty-btn qty-up" aria-label="Increase quantity">&plus;</button></div></div>' +
-      '<button class="cart-item-remove" type="button" aria-label="Remove ' + p.name + '">&times;</button>';
-
-    row.querySelector('.qty-down').addEventListener('click', () => {
-      window.KitVLTBasket.setQuantity(p.id, item.size, item.quantity - 1);
-      window.KitVLTRenderBasket(itemsEl, subtotalEl, emptyEl, onChange);
-    });
-    row.querySelector('.qty-up').addEventListener('click', () => {
-      window.KitVLTBasket.setQuantity(p.id, item.size, item.quantity + 1);
-      window.KitVLTRenderBasket(itemsEl, subtotalEl, emptyEl, onChange);
-    });
-    row.querySelector('.cart-item-remove').addEventListener('click', () => {
-      window.KitVLTBasket.remove(p.id, item.size);
-      window.KitVLTRenderBasket(itemsEl, subtotalEl, emptyEl, onChange);
-    });
-    itemsEl.appendChild(row);
-  });
-
-  if (subtotalEl) subtotalEl.textContent = '£' + subtotal.toFixed(2);
-  if (window.KitVLTPromo) window.KitVLTPromo.refresh(subtotal);
-  if (onChange) onChange(subtotal, cart);
-  return subtotal;
+    row.innerHTML = `<a class="cart-item-img" href="product.html?id=${encodeURIComponent(product.id)}" target="_blank" rel="noopener" aria-label="View ${escape(product.name)} in a new tab"><img src="${escape(product.images[0])}" alt="${escape(product.name)}" width="88" height="110"></a><div class="cart-item-info"><h4>${escape(product.name)}</h4><div class="cart-item-meta">Size ${escape(item.size)} · £${product.price.toFixed(2)} each</div><div class="qty-stepper"><button type="button" class="qty-btn qty-down" aria-label="Decrease ${escape(product.name)} size ${escape(item.size)} quantity">−</button><span class="qty-value">${item.quantity}</span><button type="button" class="qty-btn qty-up" aria-label="Increase ${escape(product.name)} size ${escape(item.size)} quantity" ${item.quantity >= 10 ? 'disabled' : ''}>+</button></div></div><span class="cart-line-total">${window.KitVLTMoney(Math.round(product.price * 100) * item.quantity)}</span><button class="cart-item-remove" type="button" aria-label="Remove ${escape(product.name)} size ${escape(item.size)}">×</button>`;
+    if (product.stock !== 'in-stock') {
+      const note = document.createElement('p'); note.className = 'form-error'; note.textContent = 'No longer available. Remove this shirt to continue.';
+      row.querySelector('.cart-item-info').appendChild(note); row.querySelector('.qty-up').disabled = true;
+    }
+    async function update(action) {
+      row.querySelectorAll('button').forEach((button) => { button.disabled = true; });
+      try { await action(); }
+      catch (error) { window.KitVLTToast(error.message); window.KitVLTRenderBasket(itemsElement, subtotalElement, emptyElement, onChange); }
+    }
+    row.querySelector('.qty-down').addEventListener('click', () => update(() => window.KitVLTBasket.setQuantity(product.id, item.size, item.quantity - 1)));
+    row.querySelector('.qty-up').addEventListener('click', () => update(() => window.KitVLTBasket.setQuantity(product.id, item.size, item.quantity + 1)));
+    row.querySelector('.cart-item-remove').addEventListener('click', () => update(() => window.KitVLTBasket.remove(product.id, item.size)));
+    itemsElement.appendChild(row);
+  }
+  if (subtotalElement) subtotalElement.textContent = window.KitVLTMoney(Math.round(summary.subtotal * 100));
+  if (window.KitVLTPromo) window.KitVLTPromo.refresh();
+  if (onChange) onChange(summary.subtotal, summary.items);
+  return summary.subtotal;
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-  badge();
-
-  const nav = document.getElementById('site-nav');
-  const menuToggle = document.getElementById('menu-toggle');
-  if (menuToggle && nav) {
-    menuToggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menuToggle.setAttribute('aria-expanded', String(open));
-    });
-    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
-      nav.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-    }));
-  }
-
-  document.querySelectorAll('[data-scroll]').forEach((b) => {
-    b.addEventListener('click', () => {
-      const t = document.querySelector(b.getAttribute('data-scroll'));
-      if (t) t.scrollIntoView({ behavior: 'smooth' });
-    });
+window.KitVLTDialog = (element, closeButton) => {
+  let previousFocus;
+  let active = false;
+  element.inert = true; element.setAttribute('aria-hidden', 'true');
+  const close = () => {
+    active = false; element.classList.remove('visible'); element.inert = true; element.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    document.querySelectorAll('body > header, body > main, body > footer').forEach((region) => { region.inert = false; });
+    if (previousFocus?.isConnected) previousFocus.focus();
+    element.dispatchEvent(new Event('kitvlt:close'));
+  };
+  const open = () => {
+    previousFocus = document.activeElement; active = true; element.inert = false; element.setAttribute('aria-hidden', 'false'); element.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    document.querySelectorAll('body > header, body > main, body > footer').forEach((region) => { region.inert = true; });
+    closeButton.focus();
+  };
+  closeButton.addEventListener('click', close);
+  element.addEventListener('click', (event) => { if (event.target === element) close(); });
+  document.addEventListener('keydown', (event) => {
+    if (!active) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'Tab') {
+      const focusable = [...element.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled)')].filter((node) => node.getClientRects().length);
+      const first = focusable[0]; const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }
   });
-
-  // Basket drawer
-  const overlay = document.getElementById('cart-overlay');
-  const cartButton = document.getElementById('cart-button');
-  if (overlay) {
-    const itemsEl = document.getElementById('cart-items');
-    const emptyEl = document.getElementById('cart-empty');
-    const subEl = document.getElementById('cart-subtotal');
-    const closeBtn = document.getElementById('cart-close');
-
-    const open = async () => {
-      await window.KitVLTRenderBasket(itemsEl, subEl, emptyEl, (sub, cart) => {
-        overlay.classList.toggle('is-empty', cart.length === 0);
-      });
-      overlay.classList.add('visible');
-    };
-    const close = () => overlay.classList.remove('visible');
-
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('visible')) close(); });
-    if (cartButton) cartButton.addEventListener('click', open);
-  } else if (cartButton) {
-    cartButton.addEventListener('click', () => { window.location.href = 'index.html#kits'; });
+  return { open, close };
+};
+document.addEventListener('DOMContentLoaded', () => {
+  const navigation = document.getElementById('site-nav'); const menu = document.getElementById('menu-toggle');
+  if (menu && navigation) {
+    const closeMenu = () => { navigation.classList.remove('open'); menu.setAttribute('aria-expanded', 'false'); };
+    menu.addEventListener('click', () => { menu.setAttribute('aria-expanded', String(navigation.classList.toggle('open'))); });
+    navigation.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
   }
+  document.querySelectorAll('[data-scroll]').forEach((button) => button.addEventListener('click', () => document.querySelector(button.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' })));
+  const overlay = document.getElementById('cart-overlay'); const cartButton = document.getElementById('cart-button');
+  if (overlay) {
+    const dialog = window.KitVLTDialog(overlay, document.getElementById('cart-close'));
+    const render = () => window.KitVLTRenderBasket(document.getElementById('cart-items'), document.getElementById('cart-subtotal'), document.getElementById('cart-empty'), (subtotal, items) => overlay.classList.toggle('is-empty', items.length === 0)).catch((error) => window.KitVLTToast(error.message));
+    cartButton?.addEventListener('click', async () => {
+      dialog.open();
+      try { await window.KitVLTBasket.refresh(); await render(); } catch (error) { window.KitVLTToast(error.message); }
+    });
+    overlay.querySelector('[data-continue-shopping]')?.addEventListener('click', dialog.close);
+    document.addEventListener('kitvlt:basket', render);
+  } else cartButton?.addEventListener('click', () => { window.location.href = 'checkout.html'; });
 });

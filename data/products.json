@@ -2,7 +2,7 @@
   {
     "id": "real-madrid-home",
     "name": "Real Madrid Home",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": true,
@@ -15,9 +15,7 @@
       "XXL"
     ],
     "images": [
-      "images/real-madrid-home.jpg",
-      "images/real-madrid-home-back.jpg",
-      "images/real-madrid-home-detail.jpg"
+      "images/real-madrid-home.jpg"
     ],
     "description": "Real Madrid Home shirt. Los Blancos' iconic white — clean, sharp and unmistakably Madrid. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -27,7 +25,7 @@
   {
     "id": "real-madrid-away",
     "name": "Real Madrid Away",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -40,9 +38,7 @@
       "XXL"
     ],
     "images": [
-      "images/real-madrid-away.jpg",
-      "images/real-madrid-away-back.jpg",
-      "images/real-madrid-away-detail.jpg"
+      "images/real-madrid-away.jpg"
     ],
     "description": "Real Madrid Away shirt. Los Blancos' iconic white — clean, sharp and unmistakably Madrid. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -52,7 +48,7 @@
   {
     "id": "barcelona",
     "name": "Barcelona Home",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": true,
@@ -65,9 +61,7 @@
       "XXL"
     ],
     "images": [
-      "images/barcelona.jpg",
-      "images/barcelona-back.jpg",
-      "images/barcelona-detail.jpg"
+      "images/barcelona.jpg"
     ],
     "description": "Barcelona Home shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -77,7 +71,7 @@
   {
     "id": "barcelona-away",
     "name": "Barcelona Away",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -90,9 +84,7 @@
       "XXL"
     ],
     "images": [
-      "images/barcelona-away.jpg",
-      "images/barcelona-away-back.jpg",
-      "images/barcelona-away-detail.jpg"
+      "images/barcelona-away.jpg"
     ],
     "description": "Barcelona Away shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -102,7 +94,7 @@
   {
     "id": "psg-home",
     "name": "PSG Home",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -115,9 +107,7 @@
       "XXL"
     ],
     "images": [
-      "images/psg-home.jpg",
-      "images/psg-home-back.jpg",
-      "images/psg-home-detail.jpg"
+      "images/psg-home.jpg"
     ],
     "description": "PSG Home shirt. Paris flair in every stitch — bold, modern, built for the big stage. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -127,7 +117,7 @@
   {
     "id": "psg-away",
     "name": "PSG Away",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -140,9 +130,7 @@
       "XXL"
     ],
     "images": [
-      "images/psg-away.jpg",
-      "images/psg-away-back.jpg",
-      "images/psg-away-detail.jpg"
+      "images/psg-away.jpg"
     ],
     "description": "PSG Away shirt. Paris flair in every stitch — bold, modern, built for the big stage. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -152,7 +140,7 @@
   {
     "id": "liverpool-home",
     "name": "Liverpool Home",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": true,
@@ -165,9 +153,7 @@
       "XXL"
     ],
     "images": [
-      "images/liverpool-home.jpg",
-      "images/liverpool-home-back.jpg",
-      "images/liverpool-home-detail.jpg"
+      "images/liverpool-home.jpg"
     ],
     "description": "Liverpool Home shirt. The famous red of Anfield, worn by a fanbase that never walks alone. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -177,7 +163,7 @@
   {
     "id": "manchester-united-home",
     "name": "Manchester United Home",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -190,9 +176,7 @@
       "XXL"
     ],
     "images": [
-      "images/manchester-united-home.jpg",
-      "images/manchester-united-home-back.jpg",
-      "images/manchester-united-home-detail.jpg"
+      "images/manchester-united-home.jpg"
     ],
     "description": "Manchester United Home shirt. Old Trafford red, with decades of history behind the badge. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -202,7 +186,7 @@
   {
     "id": "manchester-united-away",
     "name": "Manchester United Away",
-    "price": 26.99,
+    "price": 23.99,
     "type": "club",
     "era": "new-season",
     "featured": false,
@@ -215,9 +199,7 @@
       "XXL"
     ],
     "images": [
-      "images/manchester-united-away.jpg",
-      "images/manchester-united-away-back.jpg",
-      "images/manchester-united-away-detail.jpg"
+      "images/manchester-united-away.jpg"
     ],
     "description": "Manchester United Away shirt. Old Trafford red, with decades of history behind the badge. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -240,9 +222,7 @@
       "XXL"
     ],
     "images": [
-      "images/barcelona-dreamwave.jpg",
-      "images/barcelona-dreamwave-back.jpg",
-      "images/barcelona-dreamwave-detail.jpg"
+      "images/barcelona-dreamwave.jpg"
     ],
     "description": "Barcelona Dreamwave shirt. Blaugrana colours with the crest that needs no introduction. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -252,7 +232,7 @@
   {
     "id": "brazil",
     "name": "Brazil Away 2026",
-    "price": 27.99,
+    "price": 23.99,
     "type": "international",
     "era": "new-season",
     "featured": false,
@@ -265,9 +245,7 @@
       "XXL"
     ],
     "images": [
-      "images/brazil.jpg",
-      "images/brazil-back.jpg",
-      "images/brazil-detail.jpg"
+      "images/brazil.jpg"
     ],
     "description": "Brazil Away 2026 shirt. Canary yellow and a legacy of the world's most iconic strip. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -277,7 +255,7 @@
   {
     "id": "argentina",
     "name": "Argentina World Cup Messi",
-    "price": 34.99,
+    "price": 32.99,
     "type": "international",
     "era": "retro",
     "featured": false,
@@ -290,9 +268,7 @@
       "XXL"
     ],
     "images": [
-      "images/argentina.jpg",
-      "images/argentina-back.jpg",
-      "images/argentina-detail.jpg"
+      "images/argentina.jpg"
     ],
     "description": "Argentina World Cup Messi shirt. Albiceleste stripes that carried a nation to World Cup glory. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -315,9 +291,7 @@
       "XXL"
     ],
     "images": [
-      "images/brazil-2002-r9.jpg",
-      "images/brazil-2002-r9-back.jpg",
-      "images/brazil-2002-r9-detail.jpg"
+      "images/brazil-2002-r9.jpg"
     ],
     "description": "Brazil R9 2002 shirt. Canary yellow and a legacy of the world's most iconic strip. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -327,7 +301,7 @@
   {
     "id": "portugal-home-cr7",
     "name": "Portugal CR7",
-    "price": 34.99,
+    "price": 32.99,
     "type": "international",
     "era": "retro",
     "featured": false,
@@ -340,9 +314,7 @@
       "XXL"
     ],
     "images": [
-      "images/portugal-home-cr7.jpg",
-      "images/portugal-home-cr7-back.jpg",
-      "images/portugal-home-cr7-detail.jpg"
+      "images/portugal-home-cr7.jpg"
     ],
     "description": "Portugal CR7 shirt. The red of Portugal, worn by one of the game's greatest ever No.7s. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -352,7 +324,7 @@
   {
     "id": "france-1998-zidane",
     "name": "France 1998 Zidane",
-    "price": 34.99,
+    "price": 32.99,
     "type": "international",
     "era": "retro",
     "featured": true,
@@ -365,9 +337,7 @@
       "XXL"
     ],
     "images": [
-      "images/france-1998-zidane.jpg",
-      "images/france-1998-zidane-back.jpg",
-      "images/france-1998-zidane-detail.jpg"
+      "images/france-1998-zidane.jpg"
     ],
     "description": "France 1998 Zidane shirt. Les Bleus blue, from an era defined by a generational midfielder. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",
@@ -377,7 +347,7 @@
   {
     "id": "ac-milan-2006-kaka",
     "name": "AC Milan Kaká 2006 Away",
-    "price": 34.99,
+    "price": 32.99,
     "type": "club",
     "era": "retro",
     "featured": true,
@@ -390,9 +360,7 @@
       "XXL"
     ],
     "images": [
-      "images/ac-milan-2006-kaka.jpg",
-      "images/ac-milan-2006-kaka-back.jpg",
-      "images/ac-milan-2006-kaka-detail.jpg"
+      "images/ac-milan-2006-kaka.jpg"
     ],
     "description": "AC Milan Kaká 2006 Away shirt. Rossoneri stripes from a golden era of Serie A football. Unofficial replica, printed on quality breathable fabric.",
     "sizingNote": "Fits true to size for most. Between sizes or prefer a looser matchday fit? Size up. Full chest/length chart on our Size Guide page.",

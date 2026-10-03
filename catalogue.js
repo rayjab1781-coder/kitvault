@@ -8,10 +8,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const search = document.getElementById('shirt-search');
   const sort = document.getElementById('sort-select');
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const products = await window.KitVLTBasket.loadProducts();
-  let activeFilter = 'all';
-
-  const FALLBACK = "this.onerror=null;this.classList.add('img-missing');this.src=\"data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ffffff' d='M22 6 L12 12 L6 22 L14 28 L14 58 L50 58 L50 28 L58 22 L52 12 L42 6 C42 12 38 15 32 15 C26 15 22 12 22 6 Z'/%3E%3C/svg%3E\"";
+  let products;
+  try { products = await window.KitVLTBasket.loadProducts(); }
+  catch (error) {
+    grid.replaceChildren();
+    const message = document.createElement('p');
+    message.textContent = error.message;
+    const retry = document.createElement('button');
+    retry.className = 'btn btn-card';
+    retry.textContent = 'Try again';
+    retry.addEventListener('click', () => location.reload());
+    grid.append(message, retry);
+    return;
+  }
+  const initial = new URLSearchParams(location.search).get('collection');
+  let activeFilter = ['retro', 'new-season', 'featured', 'club', 'international'].includes(initial) ? initial : 'all';
+  const sizeFilter = document.getElementById('size-filter');
+  const stockFilter = document.getElementById('stock-filter');
+  const normalize = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
   function matches(p, f) {
     if (f === 'all') return true;
@@ -35,22 +49,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const href = 'product.html?id=' + encodeURIComponent(p.id);
 
     return '<article class="card ' + stockCls + '">' +
-      '<a class="card-image-link" href="' + href + '">' +
+      '<a class="card-image-link" href="' + href + '" target="_blank" rel="noopener" aria-label="' + p.name + ' — opens in a new tab">' +
         '<div class="card-image">' +
           '<span class="tag ' + t.cls + '">' + t.label + '</span>' + ribbon +
-          '<img src="' + p.images[0] + '" alt="' + p.name + '" loading="lazy" onerror="' + FALLBACK + '">' +
+          '<img src="' + window.KitVLTImage(p.images[0], 640) + '" srcset="' + window.KitVLTImage(p.images[0], 320) + ' 320w, ' + window.KitVLTImage(p.images[0], 640) + ' 640w" sizes="(max-width: 780px) 45vw, (max-width: 960px) 30vw, 24vw" alt="' + p.name + '" loading="lazy" decoding="async" width="480" height="600">' +
         '</div></a>' +
       '<div class="card-body">' +
-        '<a class="card-title-link" href="' + href + '"><h3>' + p.name + '</h3></a>' +
+        '<a class="card-title-link" href="' + href + '" target="_blank" rel="noopener"><h3>' + p.name + '</h3></a>' +
         '<p class="price">£' + p.price.toFixed(2) + '</p>' +
-        '<a class="btn btn-card" href="' + href + '">' + label + '</a>' +
+        '<a class="btn btn-card" href="' + href + '" target="_blank" rel="noopener">' + label + '<span class="sr-only"> — opens in a new tab</span></a>' +
       '</div></article>';
   }
 
   function render() {
-    const q = search ? search.value.trim().toLowerCase() : '';
+    const q = search ? normalize(search.value.trim()) : '';
     let list = products.filter((p) => matches(p, activeFilter));
-    if (q) list = list.filter((p) => p.name.toLowerCase().includes(q));
+    if (q) list = list.filter((p) => q.split(/\s+/).every((term) => normalize([p.name, p.id, p.description, p.type, p.era, p.era === 'new-season' ? 'current' : 'retro'].join(' ')).includes(term)));
+    if (sizeFilter?.value) list = list.filter((product) => product.sizes.includes(sizeFilter.value));
+    if (stockFilter?.checked) list = list.filter((product) => product.stock === 'in-stock');
 
     if (sort) {
       const m = sort.value;
@@ -62,25 +78,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     grid.innerHTML = list.map(cardHtml).join('');
     if (noResults) noResults.classList.toggle('visible', list.length === 0);
-
-    if ('IntersectionObserver' in window) {
-      const cards = grid.querySelectorAll('.card');
-      cards.forEach((c, i) => { c.classList.add('reveal'); c.style.transitionDelay = (Math.min(i % 6, 5) * 0.06) + 's'; });
-      const obs = new IntersectionObserver((entries, o) => {
-        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in-view'); o.unobserve(e.target); } });
-      }, { threshold: 0.12 });
-      cards.forEach((c) => obs.observe(c));
-    }
+    document.getElementById('results-count').textContent = `${list.length} ${list.length === 1 ? 'shirt' : 'shirts'}${activeFilter !== 'all' ? ' · ' + (activeFilter === 'new-season' ? 'Current' : activeFilter) : ''}`;
+    filterBtns.forEach((button) => { button.classList.toggle('active', button.dataset.filter === activeFilter); button.setAttribute('aria-pressed', String(button.dataset.filter === activeFilter)); });
   }
 
   filterBtns.forEach((btn) => btn.addEventListener('click', () => {
     filterBtns.forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
     btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true');
     activeFilter = btn.getAttribute('data-filter');
+    const url = new URL(location.href);
+    if (activeFilter === 'all') url.searchParams.delete('collection');
+    else url.searchParams.set('collection', activeFilter);
+    history.replaceState(null, '', url);
     render();
   }));
 
   if (search) search.addEventListener('input', render);
   if (sort) sort.addEventListener('change', render);
+  sizeFilter?.addEventListener('change', render);
+  stockFilter?.addEventListener('change', render);
+  document.getElementById('reset-filters')?.addEventListener('click', () => { activeFilter = 'all'; search.value = ''; sizeFilter.value = ''; stockFilter.checked = false; render(); });
   render();
 });
