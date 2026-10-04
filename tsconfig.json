@@ -10,5 +10,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["db/**/*.ts", "server/**/*.ts", "netlify/functions/**/*.ts", "drizzle.config.ts"]
+  "include": ["db/**/*.ts", "server/**/*.ts", "netlify/functions/**/*.ts", "netlify/functions/**/*.mts", "drizzle.config.ts"]
 }

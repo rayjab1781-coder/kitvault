@@ -22,15 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-newsletter-form]').forEach((form) => form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const button = form.querySelector('button[type="submit"]'); const status = form.querySelector('[role="status"]');
-    button.disabled = true; status.textContent = 'Saving your signup…';
+    button.disabled = true; status.textContent = 'Joining the list and sending your welcome email…';
     try {
       const response = await fetch('/.netlify/functions/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.elements.email.value, consent: form.elements.consent.checked, website: form.elements.website.value }) });
-      const result = await response.json();
+      const result = await response.json().catch(() => { throw new Error('Newsletter signup is temporarily unavailable. Please try again in a few minutes.'); });
       if (!response.ok) throw new Error(result.error || 'Your signup could not be saved. Please try again.');
-      status.textContent = result.message + ' Your signup is saved. Automated emails are not connected yet.';
+      status.textContent = result.message;
       form.querySelector('[data-newsletter-code]').hidden = false;
       remember(); form.reset();
-    } catch (error) { status.textContent = error.message; }
+    } catch (error) { status.textContent = error instanceof TypeError ? 'We couldn’t reach the newsletter service. Check your connection and try again.' : error.message; }
     finally { button.disabled = false; }
   }));
   document.querySelectorAll('[data-copy-discount]').forEach((button) => button.addEventListener('click', async () => {
