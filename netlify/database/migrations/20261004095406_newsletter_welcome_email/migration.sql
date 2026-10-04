@@ -1,0 +1,1 @@
+ALTER TABLE "subscribers" ADD COLUMN "welcome_email_sent_at" timestamp;

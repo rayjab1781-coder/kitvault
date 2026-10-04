@@ -17,6 +17,7 @@ export const subscribers = pgTable('subscribers', {
   email: text().primaryKey(),
   consentAt: timestamp('consent_at').defaultNow().notNull(),
   source: text().notNull().default('website'),
+  welcomeEmailSentAt: timestamp('welcome_email_sent_at'),
 });
 
 export const conversations = pgTable('conversations', {
