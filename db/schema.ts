@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, integer, jsonb, primaryKey } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, integer, jsonb, primaryKey, check, index } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 export const baskets = pgTable('baskets', {
   id: text().primaryKey(),
@@ -47,3 +48,18 @@ export const rateLimits = pgTable('rate_limits', {
   id: text().primaryKey(),
   count: integer().notNull().default(1),
 });
+
+export const reviews = pgTable('reviews', {
+  id: text().primaryKey(),
+  displayName: text('display_name').notNull(),
+  rating: integer().notNull(),
+  review: text().notNull(),
+  status: text().notNull().default('pending'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => [
+  check('reviews_rating_range', sql`${table.rating} between 1 and 5`),
+  check('reviews_status_values', sql`${table.status} in ('pending', 'approved', 'rejected')`),
+  check('reviews_name_length', sql`char_length(trim(${table.displayName})) between 1 and 80`),
+  check('reviews_text_length', sql`char_length(trim(${table.review})) between 10 and 2000`),
+  index('reviews_public_index').on(table.status, table.createdAt),
+]);

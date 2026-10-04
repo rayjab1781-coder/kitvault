@@ -1,4 +1,4 @@
-The matchday stadium photograph used in the homepage and newsletter offer was sourced from Unsplash:
+The matchday stadium photograph used in the homepage and first-order offer was sourced from Unsplash:
 
 https://images.unsplash.com/photo-1522778119026-d647f0596c20
 

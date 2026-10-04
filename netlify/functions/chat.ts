@@ -8,7 +8,7 @@ type Intent = { topic: string; productIds?: string[]; size?: string };
 
 function catalogueIntent(message: string): Intent {
   const query = message.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  if (/discount|newsletter|promo|kitvlt10|10%/.test(query)) return { topic: 'discount' };
+  if (/discount|promo|kitvlt10|10%/.test(query)) return { topic: 'discount' };
   if (/ship|deliver|postage/.test(query)) return { topic: 'shipping' };
   if (/return|refund|exchange/.test(query)) return { topic: 'returns' };
   if (/contact|email/.test(query)) return { topic: 'contact' };
@@ -21,7 +21,7 @@ function catalogueIntent(message: string): Intent {
 }
 
 function answer(intent: Intent) {
-  if (intent.topic === 'discount') return { reply: 'Join the KitVLT newsletter to get KITVLT10 for 10% off the shirts in your first order. Apply it once in your basket; delivery is not discounted. Your signup is saved, but automated newsletter emails are not connected yet.', productIds: [] };
+  if (intent.topic === 'discount') return { reply: 'Use KITVLT10 for 10% off the shirts in your first order. Apply it in your basket or at checkout; delivery is not discounted. One code per order.', productIds: [] };
   if (intent.topic === 'shipping') return { reply: 'Orders are typically dispatched within 2–4 business days. UK orders over £50 qualify for free delivery, based on the shirt subtotal before discount. Other delivery rates appear at checkout when configured; no unconfigured rate is charged. Delivery times vary by destination. See Shipping & Returns, or email KitVaultCustomerService@gmail.com.', productIds: [] };
   if (intent.topic === 'returns') return { reply: 'Unworn, unwashed shirts in their original condition with tags can be returned within 30 days of delivery. For a damaged, faulty or incorrect shirt, contact KitVLT within 14 days. See Shipping & Returns for the complete policy.', productIds: [] };
   if (intent.topic === 'contact') return { reply: 'Contact KitVLT at KitVaultCustomerService@gmail.com for order or product questions. Please do not share card details in this chat.', productIds: [] };

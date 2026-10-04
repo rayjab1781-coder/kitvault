@@ -5,7 +5,7 @@ type Promotion = {
 } & ({ type: 'percentage'; percent: number; collection?: 'retro' } | { type: 'free-shipping' });
 
 export const promotions: Record<string, Promotion> = {
-  KITVLT10: { type: 'percentage', percent: 10, active: true, firstOrderOnly: true, offer: 'Newsletter welcome offer' },
+  KITVLT10: { type: 'percentage', percent: 10, active: true, firstOrderOnly: true, offer: 'First-order welcome offer' },
   OCT3: { type: 'percentage', percent: 15, active: true, firstOrderOnly: false, offer: 'Launch offer' },
   COMMENT10: { type: 'percentage', percent: 10, active: true, firstOrderOnly: false, offer: 'Social media/comment offer' },
   WELCOME15: { type: 'percentage', percent: 15, active: true, firstOrderOnly: false, offer: 'General welcome offer' },
