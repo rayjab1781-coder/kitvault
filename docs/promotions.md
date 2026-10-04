@@ -4,7 +4,7 @@
 
 | Code | Benefit | Offer | Scope |
 | --- | --- | --- | --- |
-| KITVLT10 | 10% off | Newsletter welcome offer | Shirt subtotal; existing first-order restriction retained |
+| KITVLT10 | 10% off | First-order welcome offer | Shirt subtotal; existing first-order restriction retained |
 | OCT3 | 15% off | Launch offer | Shirt subtotal |
 | COMMENT10 | 10% off | Social media/comment offer | Shirt subtotal |
 | WELCOME15 | 15% off | General welcome offer | Shirt subtotal |
