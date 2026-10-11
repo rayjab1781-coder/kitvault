@@ -7,19 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const revision = ++quoting;
     pay.disabled = true;
     shipping.textContent = 'Calculating…';
-    if (!window.KitVLTBasket.getRaw().length) { shipping.textContent = '—'; return; }
+    total.textContent = 'Calculating…';
+    document.getElementById('cart-discount').textContent = 'Calculating…';
+    if (!window.KitVLTBasket.getRaw().length) { shipping.textContent = '—'; total.textContent = '—'; return; }
     try {
       const response = await fetch('/.netlify/functions/checkout-quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ country: country.value, email: form.elements.email.value.trim() }) });
       const summary = await response.json();
       if (revision !== quoting) return;
       if (!response.ok) throw new Error(summary.error || 'Unable to calculate your order.');
+      document.getElementById('cart-subtotal').textContent = window.KitVLTMoney(Math.round(summary.subtotal * 100));
+      document.getElementById('cart-discount-label').textContent = `Discount${summary.promo?.code ? ` (${summary.promo.code})` : ''}`;
+      document.getElementById('cart-discount').textContent = '−' + window.KitVLTMoney(Math.round(summary.discount * 100));
+      document.getElementById('promo-help').textContent = summary.deliveryOffset > 0 ? `One code per order. Your discount includes an extra ${window.KitVLTMoney(Math.round(summary.deliveryOffset * 100))} saving towards delivery; the delivery fee is still charged below.` : 'One code per order. Discounts apply to shirts; free shipping is reflected in delivery below.';
       shipping.textContent = summary.shipping === null ? 'Rate not connected' : summary.shipping === 0 ? 'Free' : window.KitVLTMoney(Math.round(summary.shipping * 100));
       total.textContent = summary.finalTotal === null ? window.KitVLTMoney(Math.round(summary.total * 100)) + ' + delivery' : window.KitVLTMoney(Math.round(summary.finalTotal * 100));
       if (!summary.payments) { status.textContent = 'Payments are not connected yet. Your basket is saved, but no payment can be taken. Contact KitVLT for help.'; pay.textContent = 'Payment currently unavailable'; }
       else if (summary.shipping === null) { status.textContent = 'Delivery rates for this destination are not connected yet. Please contact KitVLT before ordering.'; pay.textContent = 'Delivery rate unavailable'; }
       else { status.textContent = 'Your order is ready for secure Stripe payment. No card details are stored by KitVLT.'; pay.textContent = 'Continue to secure payment'; pay.disabled = submitting; }
       error.textContent = '';
-    } catch (problem) { if (revision === quoting) { shipping.textContent = '—'; error.textContent = problem.message; status.textContent = 'Please resolve the order message before payment.'; } }
+    } catch (problem) { if (revision === quoting) { shipping.textContent = '—'; total.textContent = '—'; error.textContent = problem.message; status.textContent = 'Please resolve the order message before payment.'; } }
   }
   const render = async () => {
     try {

@@ -17,7 +17,7 @@ export async function finishOrder(session: Stripe.Checkout.Session) {
     const [order] = await transaction.select().from(orders).where(eq(orders.id, session.id)).for('update');
     if (!order) throw new StoreError('Order is not available yet. Please try again.', 503);
     if (order.status === 'paid') return order;
-    if (session.currency !== 'gbp' || session.amount_total !== order.total) throw new StoreError('Order totals require review. Please contact KitVLT.', 409);
+    if (session.currency !== 'gbp' || session.amount_subtotal !== order.subtotal || session.total_details?.amount_discount !== order.discount || session.total_details.amount_shipping !== order.shipping || session.total_details.amount_tax !== 0 || session.amount_total !== order.total) throw new StoreError('Order totals require review. Please contact KitVLT.', 409);
     const shipping = session.collected_information?.shipping_details;
     const customer = { ...(order.customer as Record<string, unknown>), ...(shipping ? { shipping } : {}) };
     const [paid] = await transaction.update(orders).set({ status: 'paid', paidAt: new Date(), customer, email: session.customer_details?.email?.toLowerCase() || order.email }).where(eq(orders.id, order.id)).returning();
