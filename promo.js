@@ -10,10 +10,13 @@
   function paint() {
     const summary = window.KitVLTBasket.getSummary();
     const promo = summary.promo;
-    document.getElementById('cart-discount-row').hidden = !promo?.valid;
-    document.getElementById('cart-discount-label').textContent = `${promo?.freeShipping ? 'Free shipping' : 'Discount'} (${promo?.code || ''})`;
-    document.getElementById('cart-discount').textContent = promo?.freeShipping ? 'Applied at checkout' : '−' + window.KitVLTMoney(Math.round(summary.discount * 100));
-    document.getElementById('cart-total').textContent = window.KitVLTMoney(Math.round(summary.total * 100));
+    const isCheckout = Boolean(document.getElementById('checkout-shipping'));
+    document.getElementById('cart-discount-row').hidden = !isCheckout && !promo?.valid;
+    if (!isCheckout) {
+      document.getElementById('cart-discount-label').textContent = `${promo?.freeShipping ? 'Free shipping' : 'Discount'}${promo?.code ? ` (${promo.code})` : ''}`;
+      document.getElementById('cart-discount').textContent = promo?.freeShipping ? 'Applied at checkout' : '−' + window.KitVLTMoney(Math.round(summary.discount * 100));
+      document.getElementById('cart-total').textContent = window.KitVLTMoney(Math.round(summary.total * 100)) + (promo?.valid ? '' : ' + delivery');
+    }
     const remove = document.getElementById('promo-remove'); if (remove) remove.hidden = !summary.promo;
     if (promo) {
       panel.hidden = false; tab.setAttribute('aria-expanded', 'true');

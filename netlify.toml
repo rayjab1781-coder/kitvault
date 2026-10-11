@@ -15,6 +15,18 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 [[redirects]]
+  from = "/server/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/docs/promotions.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
   from = "/product.html"
   to = "/.netlify/functions/product-page"
   status = 200

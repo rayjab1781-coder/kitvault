@@ -13,7 +13,8 @@ export class StoreError extends Error {
 
 export function guard(request: Request) {
   const origin = request.headers.get('origin');
-  if (origin && origin !== new URL(request.url).origin) throw new StoreError('Request not permitted.', 403);
+  const fetchSite = request.headers.get('sec-fetch-site');
+  if (fetchSite === 'cross-site' || origin === 'null' || (origin && origin !== new URL(request.url).origin && fetchSite !== 'same-origin')) throw new StoreError('Request not permitted.', 403);
 }
 
 export async function body(request: Request) {
@@ -61,11 +62,11 @@ export async function basket(id: string, requestedCode?: string | null) {
   const totals = items.reduce((total, item) => {
     const product = products.find((entry) => entry.id === item.productId);
     const amount = product ? Math.round(product.price * 100) * item.quantity : 0;
-    return { subtotal: total.subtotal + amount, retroSubtotal: total.retroSubtotal + (product?.era === 'retro' ? amount : 0) };
-  }, { subtotal: 0, retroSubtotal: 0 });
+    return { subtotal: total.subtotal + amount };
+  }, { subtotal: 0 });
   const subtotal = totals.subtotal;
   const code = requestedCode === undefined ? stored?.promoCode || null : requestedCode;
-  const result = evaluatePromotion(subtotal, totals.retroSubtotal, code);
+  const result = evaluatePromotion(subtotal, code);
   const discount = result?.discount || 0;
   const promo = result ? { ...result, discount: result.discount / 100, total: result.total / 100 } : null;
   return { items, subtotal: subtotal / 100, discount: discount / 100, total: (subtotal - discount) / 100, promo };
@@ -91,5 +92,15 @@ export function shippingQuote(country: string, subtotal: number, code: string | 
   if (country === 'GB' && subtotal > 5000) return 0;
   const setting = country === 'GB' ? process.env.KITVLT_UK_SHIPPING_PENCE : process.env.KITVLT_INTERNATIONAL_SHIPPING_PENCE;
   if (!setting || !/^\d+$/.test(setting)) return null;
-  return Number(setting);
+  const amount = Number(setting);
+  return Number.isSafeInteger(amount) ? amount : null;
+}
+
+export function checkoutTotals(summary: Awaited<ReturnType<typeof basket>>, country: string) {
+  const subtotal = Math.round(summary.subtotal * 100);
+  const productDiscount = Math.round(summary.discount * 100);
+  const shipping = shippingQuote(country, subtotal, summary.promo?.code || null);
+  const deliveryOffset = shipping !== null && summary.promo?.valid && !summary.promo.freeShipping ? Math.min(shipping, subtotal - productDiscount) : 0;
+  const discount = productDiscount + deliveryOffset;
+  return { subtotal, discount, shipping, deliveryOffset, total: shipping === null ? null : subtotal - discount + shipping };
 }
