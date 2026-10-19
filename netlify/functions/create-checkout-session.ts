@@ -1,3 +1,4 @@
+import { supportsShippingCountry } from '../../server/countries';
 import { body, session, basket, products, db, orders, validateItem, checkoutTotals, json, failure, StoreError, checkEligibility, limit, eq } from '../../server/store';
 import { stripeClient, orderNumber, fingerprint } from '../../server/payment';
 import type Stripe from 'stripe';
@@ -20,7 +21,7 @@ export default async (request: Request) => {
     const clean = Object.fromEntries([...fields, 'line2'].map((field) => [field, String(customer[field] || '').trim().slice(0, 254)]));
     clean.email = clean.email.toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean.email)) throw new StoreError('Enter a valid email address.');
-    if (!['GB', 'IE', 'US', 'CA', 'AU', 'FR', 'DE', 'ES', 'IT', 'NL'].includes(clean.country)) throw new StoreError('This shipping destination is not supported.');
+    if (!supportsShippingCountry(clean.country)) throw new StoreError('This shipping destination is not supported.');
     const { subtotal, discount, shipping } = checkoutTotals(summary, clean.country);
     if (shipping === null) throw new StoreError('Delivery rates for this destination are not connected yet. Please contact KitVLT before ordering.', 503);
     await checkEligibility(clean.email, summary.promo?.code || null);

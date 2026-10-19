@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await fetch('/.netlify/functions/chat'); const data = await response.json();
       if (!response.ok) throw new Error(data.error);
       if (data.history.length) data.history.forEach((message) => bubble(message.role, message.content, message.productIds));
-      else bubble('assistant', 'Your next shirt is in the vault. Ask me about a club, a player, retro shirts or the 10% offer. Please don’t share payment details here.');
+      else bubble('assistant', 'Hi! I’m KitGPT. How’s your day going? We can chat, or I can help you find a shirt. Please don’t share payment details here.');
     } catch { initialized = false; bubble('assistant', 'Chat is temporarily unavailable. You can still browse shirts or contact KitVaultCustomerService@gmail.com.'); }
   }
   function toggle(open) {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await fetch('/.netlify/functions/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) });
       const result = await response.json(); if (!response.ok) throw new Error(result.error || 'Chat is temporarily unavailable.');
       waiting.remove(); bubble('assistant', result.reply, result.productIds);
-      if (mode) mode.textContent = result.mode === 'ai' ? 'AI-assisted · grounded in the vault' : 'Catalogue help · AI unavailable';
+      if (mode) mode.textContent = result.mode === 'ai' ? 'AI-assisted · grounded in the vault' : result.mode === 'conversation' ? 'KitGPT · let’s chat' : 'Catalogue help · AI unavailable';
     } catch (error) { waiting.textContent = error.message + ' Try again, or email KitVaultCustomerService@gmail.com.'; }
     finally { sending = false; send.disabled = false; input.focus(); }
   });
