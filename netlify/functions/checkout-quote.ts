@@ -1,9 +1,11 @@
+import { supportsShippingCountry } from '../../server/countries';
 import { body, session, basket, checkoutTotals, json, failure, StoreError, checkEligibility } from '../../server/store';
 
 export default async (request: Request) => {
   try {
     if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
     const input = await body(request);
+    if (!supportsShippingCountry(String(input.country))) throw new StoreError('This shipping destination is not supported.');
     const current = await session(request, false);
     const summary = await basket(current.id);
     if (!summary.items.length) throw new StoreError('Your basket is empty.');
