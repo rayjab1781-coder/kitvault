@@ -72,10 +72,10 @@ export async function basket(id: string, requestedCode?: string | null) {
   return { items, subtotal: subtotal / 100, discount: discount / 100, total: (subtotal - discount) / 100, promo };
 }
 
-export async function checkEligibility(email: string, code: string | null) {
+export async function checkEligibility(email: string, code: string | null, database: Pick<typeof db, 'select'> = db) {
   if (!code || !getPromotion(code)?.firstOrderOnly) return;
-  const [previous] = await db.select({ id: orders.id }).from(orders).where(and(eq(orders.email, email.toLowerCase()), eq(orders.status, 'paid'))).limit(1);
-  if (previous) throw new StoreError(`${code} is for your first order. Please remove the code to continue.`);
+  const [previous] = await database.select({ id: orders.id }).from(orders).where(and(sql`lower(trim(${orders.email})) = ${email.trim().toLowerCase()}`, eq(orders.status, 'paid'))).limit(1);
+  if (previous) throw new StoreError(`${code} is only available on your first successful order. You have already placed an order. Please remove the code to continue.`);
 }
 
 export async function limit(request: Request, action: string, maximum: number) {
@@ -100,7 +100,7 @@ export function checkoutTotals(summary: Awaited<ReturnType<typeof basket>>, coun
   const subtotal = Math.round(summary.subtotal * 100);
   const productDiscount = Math.round(summary.discount * 100);
   const shipping = shippingQuote(country, subtotal, summary.promo?.code || null);
-  const deliveryOffset = shipping !== null && summary.promo?.valid && !summary.promo.freeShipping ? Math.min(shipping, subtotal - productDiscount) : 0;
+  const deliveryOffset = shipping !== null && summary.promo?.valid && !summary.promo.freeShipping && !summary.promo.firstOrderOnly ? Math.min(shipping, subtotal - productDiscount) : 0;
   const discount = productDiscount + deliveryOffset;
   return { subtotal, discount, shipping, deliveryOffset, total: shipping === null ? null : subtotal - discount + shipping };
 }
