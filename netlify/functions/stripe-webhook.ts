@@ -1,5 +1,5 @@
 import { stripeClient, finishOrder } from '../../server/payment';
-import { json } from '../../server/store';
+import { json, db, orders, eq, and } from '../../server/store';
 import type Stripe from 'stripe';
 
 export default async (request: Request) => {
@@ -8,6 +8,11 @@ export default async (request: Request) => {
   let event: Stripe.Event;
   try { event = stripeClient().webhooks.constructEvent(await request.text(), request.headers.get('stripe-signature') || '', process.env.STRIPE_WEBHOOK_SECRET); }
   catch { return json({ error: 'Invalid webhook signature.' }, 400); }
+  if (event.type === 'checkout.session.async_payment_failed') {
+    try {
+      await db.update(orders).set({ status: 'failed' }).where(and(eq(orders.id, (event.data.object as Stripe.Checkout.Session).id), eq(orders.status, 'pending')));
+    } catch { return json({ error: 'Payment status could not be recorded. Please retry.' }, 500); }
+  }
   if (['checkout.session.completed', 'checkout.session.async_payment_succeeded'].includes(event.type)) {
     try {
       const paid = await finishOrder(event.data.object as Stripe.Checkout.Session);
