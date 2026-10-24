@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let list = products.filter((p) => matches(p, activeFilter));
     if (q) list = list.filter((p) => q.split(/\s+/).every((term) => normalize([p.name, p.id, p.description, p.type, p.era, p.era === 'new-season' ? 'current' : 'retro'].join(' ')).includes(term)));
     if (sizeFilter?.value) list = list.filter((product) => product.sizes.includes(sizeFilter.value));
-    if (stockFilter?.checked) list = list.filter((product) => product.stock === 'in-stock');
+    if (stockFilter?.checked) list = list.filter((product) => product.stock === 'in-stock' && (!sizeFilter?.value || !product.outOfStockSizes?.includes(sizeFilter.value)));
 
     if (sort) {
       const m = sort.value;

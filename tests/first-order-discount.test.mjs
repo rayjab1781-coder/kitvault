@@ -80,6 +80,45 @@ try {
     const other = store.checkoutTotals({ subtotal: 24, discount: 2.4, promo: { code: 'COMMENT10', valid: true, firstOrderOnly: false, freeShipping: false } }, 'GB');
     assert.equal(other.discount, 640); // Existing behavior for other promotions.
   });
+  await test('only the three requested sizes are blocked; other sizes and stock statuses remain unchanged', () => {
+    for (const [productId, unavailable] of [['brazil-2002-r9', 'S'], ['ac-milan-2006-kaka', 'S'], ['barcelona', 'M']]) {
+      const product = store.products.find(product => product.id === productId);
+      assert.equal(product.stock, 'in-stock');
+      for (const size of product.sizes) {
+        const item = { productId, size, quantity: 1 };
+        if (size === unavailable) assert.throws(() => store.validateItem(item), /Out of Stock/);
+        else assert.equal(store.validateItem(item).id, productId);
+      }
+    }
+    for (const product of store.products.filter(product => !product.outOfStockSizes)) {
+      for (const size of product.sizes) {
+        const validate = () => store.validateItem({ productId: product.id, size, quantity: 1 });
+        if (product.stock === 'in-stock') assert.equal(validate().id, product.id);
+        else assert.throws(validate, /not available/);
+      }
+    }
+  });
+  await test('welcome discount rounds £22.99 and £23.99 correctly with and without shipping', () => {
+    for (const [price, discount, net] of [[2299, 230, 2069], [2399, 240, 2159]]) {
+      for (const code of ['WELCOME10', 'KITVLT10']) {
+        const promo = store.evaluatePromotion(price, code);
+        assert.equal(promo.discount, discount);
+        assert.equal(promo.total, net);
+        for (const shipping of [0, 299, 400]) {
+          process.env.KITVLT_UK_SHIPPING_PENCE = String(shipping);
+          const totals = store.checkoutTotals({ subtotal: price / 100, discount: discount / 100, promo }, 'GB');
+          assert.equal(totals.discount, discount);
+          assert.equal(totals.total, net + shipping);
+          assert.equal(totals.deliveryOffset, 0);
+        }
+      }
+    }
+  });
+  await test('payment confirmation rejects any mismatch between the charged and stored total', async () => {
+    reset(); rows = [pending('cs_mismatch')];
+    await assert.rejects(store.finishOrder(checkoutSession('cs_mismatch', { amount_total: 2561 })), /totals require review/);
+    assert.equal(rows[0].status, 'pending');
+  });
   await test('abandoned and failed payments do not consume eligibility', async () => {
     reset(); rows = [pending('cs_abandoned'), { ...pending('cs_failed'), status: 'failed' }];
     assert.equal(await store.finishOrder(checkoutSession('cs_abandoned', { payment_status: 'unpaid' })), null);

@@ -15,7 +15,7 @@
     if (!isCheckout) {
       document.getElementById('cart-discount-label').textContent = `${promo?.freeShipping ? 'Free shipping' : 'Discount'}${promo?.code ? ` (${promo.code})` : ''}`;
       document.getElementById('cart-discount').textContent = promo?.freeShipping ? 'Applied at checkout' : '−' + window.KitVLTMoney(Math.round(summary.discount * 100));
-      document.getElementById('cart-total').textContent = window.KitVLTMoney(Math.round(summary.total * 100)) + (promo?.valid ? '' : ' + delivery');
+      document.getElementById('cart-total').textContent = window.KitVLTMoney(Math.round(summary.total * 100)) + (promo?.valid && promo.freeShipping ? '' : ' + delivery');
     }
     const remove = document.getElementById('promo-remove'); if (remove) remove.hidden = !summary.promo;
     if (promo) {
