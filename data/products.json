@@ -47,6 +47,7 @@
   },
   {
     "id": "barcelona",
+    "outOfStockSizes": ["M"],
     "name": "Barcelona Home",
     "price": 23.99,
     "type": "club",
@@ -277,6 +278,7 @@
   },
   {
     "id": "brazil-2002-r9",
+    "outOfStockSizes": ["S"],
     "name": "Brazil R9 2002",
     "price": 34.99,
     "type": "international",
@@ -346,6 +348,7 @@
   },
   {
     "id": "ac-milan-2006-kaka",
+    "outOfStockSizes": ["S"],
     "name": "AC Milan Kaká 2006 Away",
     "price": 32.99,
     "type": "club",

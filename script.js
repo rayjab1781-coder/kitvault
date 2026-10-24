@@ -76,9 +76,9 @@ window.KitVLTRenderBasket = async (itemsElement, subtotalElement, emptyElement, 
     const row = document.createElement('div');
     row.className = 'cart-item';
     row.innerHTML = `<a class="cart-item-img" href="product.html?id=${encodeURIComponent(product.id)}" target="_blank" rel="noopener" aria-label="View ${escape(product.name)} in a new tab"><img src="${escape(product.images[0])}" alt="${escape(product.name)}" width="88" height="110"></a><div class="cart-item-info"><h4>${escape(product.name)}</h4><div class="cart-item-meta">Size ${escape(item.size)} · £${product.price.toFixed(2)} each</div><div class="qty-stepper"><button type="button" class="qty-btn qty-down" aria-label="Decrease ${escape(product.name)} size ${escape(item.size)} quantity">−</button><span class="qty-value">${item.quantity}</span><button type="button" class="qty-btn qty-up" aria-label="Increase ${escape(product.name)} size ${escape(item.size)} quantity" ${item.quantity >= 10 ? 'disabled' : ''}>+</button></div></div><span class="cart-line-total">${window.KitVLTMoney(Math.round(product.price * 100) * item.quantity)}</span><button class="cart-item-remove" type="button" aria-label="Remove ${escape(product.name)} size ${escape(item.size)}">×</button>`;
-    if (product.stock !== 'in-stock') {
-      const note = document.createElement('p'); note.className = 'form-error'; note.textContent = 'No longer available. Remove this shirt to continue.';
-      row.querySelector('.cart-item-info').appendChild(note); row.querySelector('.qty-up').disabled = true;
+    if (product.stock !== 'in-stock' || product.outOfStockSizes?.includes(item.size)) {
+      const note = document.createElement('p'); note.className = 'form-error'; note.textContent = `Size ${item.size} — Out of Stock. Remove this shirt to continue.`;
+      row.querySelector('.cart-item-info').appendChild(note); row.querySelector('.qty-up').disabled = true; row.querySelector('.qty-down').disabled = item.quantity > 1;
     }
     async function update(action) {
       row.querySelectorAll('button').forEach((button) => { button.disabled = true; });

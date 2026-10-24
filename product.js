@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let selectedSize = ''; let quantity = 1;
   const sizes = document.getElementById('product-sizes'); const error = document.getElementById('product-buy-error');
   for (const size of product.sizes) {
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'size-button'; button.textContent = size;
-    button.setAttribute('aria-pressed', 'false'); button.disabled = product.stock !== 'in-stock';
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'size-button'; button.textContent = product.outOfStockSizes?.includes(size) ? `${size} — Out of Stock` : size;
+    button.setAttribute('aria-pressed', 'false'); button.disabled = product.stock !== 'in-stock' || product.outOfStockSizes?.includes(size);
     button.addEventListener('click', () => {
       selectedSize = size; error.textContent = '';
       sizes.querySelectorAll('button').forEach((option) => option.setAttribute('aria-pressed', String(option === button)));
@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     async function addToBasket(checkout) {
       error.textContent = '';
+      if (product.outOfStockSizes?.includes(selectedSize)) { error.textContent = 'This size is Out of Stock.'; return; }
       if (!selectedSize) { error.textContent = 'Please select a size.'; sizes.querySelector('button').focus(); return; }
       add.disabled = true; buy.disabled = true;
       const label = add.textContent; add.textContent = 'Adding…';

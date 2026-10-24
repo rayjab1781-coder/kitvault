@@ -1,5 +1,5 @@
 import { supportsShippingCountry } from '../../server/countries';
-import { body, session, basket, checkoutTotals, json, failure, StoreError, checkEligibility } from '../../server/store';
+import { body, session, basket, checkoutTotals, json, failure, StoreError, checkEligibility, validateItem } from '../../server/store';
 
 export default async (request: Request) => {
   try {
@@ -9,6 +9,7 @@ export default async (request: Request) => {
     const current = await session(request, false);
     const summary = await basket(current.id);
     if (!summary.items.length) throw new StoreError('Your basket is empty.');
+    summary.items.forEach(validateItem);
     if (summary.promo && !summary.promo.valid) throw new StoreError(summary.promo.message);
     if (input.email) await checkEligibility(String(input.email).trim().toLowerCase(), summary.promo?.code || null);
     const pricing = checkoutTotals(summary, String(input.country));

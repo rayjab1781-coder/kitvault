@@ -51,6 +51,7 @@ export function validateItem(item: { productId: string; size: string; quantity: 
   const product = products.find((entry) => entry.id === item.productId);
   if (!product) throw new StoreError('This shirt is no longer in the catalogue.');
   if (!product.sizes.includes(item.size)) throw new StoreError('Please select a size.');
+  if (product.outOfStockSizes?.includes(item.size)) throw new StoreError(`${product.name} — Size ${item.size}: Out of Stock. Remove this variant to continue.`);
   if (product.stock !== 'in-stock') throw new StoreError(`${product.name} is not available to purchase.`);
   if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 10) throw new StoreError('Choose a quantity between 1 and 10.');
   return product;
